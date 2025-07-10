@@ -31,3 +31,33 @@ export async function testConnection() {
     return false
   }
 }
+
+// Função para testar auth
+export async function testAuth() {
+  try {
+    console.log('🔍 Testando autenticação...')
+    
+    // Teste básico da auth
+    const { data: session, error: sessionError } = await supabase.auth.getSession()
+    
+    if (sessionError) {
+      console.error('❌ Erro na sessão:', sessionError)
+      return false
+    }
+    
+    console.log('✅ Auth funcionando. Sessão atual:', session.session?.user?.email || 'Não logado')
+    
+    return true
+  } catch (error) {
+    console.error('❌ Erro no teste de auth:', error)
+    return false
+  }
+}
+
+// Expor para debug no browser (sem expor chaves)
+if (typeof window !== 'undefined') {
+  (window as any).supabaseDebug = {
+    testConnection,
+    testAuth
+  }
+}

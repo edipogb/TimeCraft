@@ -28,7 +28,8 @@ export default defineConfig({
       manifest: {
         name: 'TimeCraft',
         short_name: 'TimeCraft',
-        description: 'Personal Productivity Hub',
+        description: 'Hub de Produtividade Pessoal',
+        lang: 'pt-BR',
         theme_color: '#3b82f6',
         background_color: '#ffffff',
         display: 'standalone',
