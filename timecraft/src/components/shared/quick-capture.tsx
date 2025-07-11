@@ -64,8 +64,8 @@ export function QuickCapture() {
       setIsExpanded(false)
       
       toast.success(MESSAGES.capture.success)
-    } catch (error: any) {
-      console.error('Erro ao capturar nota:', error.message)
+    } catch (error: unknown) {
+      console.error('Erro ao capturar nota:', error instanceof Error ? error.message : 'Unknown error')
       toast.error(MESSAGES.capture.error_generic)
     } finally {
       setLoading(false)
@@ -91,7 +91,7 @@ export function QuickCapture() {
       <Card className="shadow-lg">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center justify-between">
-            Quick Capture
+            Captura Rápida
             <Button
               variant="ghost"
               size="sm"

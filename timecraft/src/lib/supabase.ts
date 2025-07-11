@@ -18,7 +18,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // Função de teste da conexão
 export async function testConnection() {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('usuarios')
       .select('id')
       .limit(1)
@@ -56,7 +56,7 @@ export async function testAuth() {
 
 // Expor para debug no browser (sem expor chaves)
 if (typeof window !== 'undefined') {
-  (window as any).supabaseDebug = {
+  (window as unknown as { supabaseDebug: typeof import('./supabase') }).supabaseDebug = {
     testConnection,
     testAuth
   }

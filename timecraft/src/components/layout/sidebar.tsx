@@ -1,16 +1,25 @@
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/lib/constants'
-
-const navigation = [
-  { name: 'Dashboard', href: ROUTES.dashboard, icon: '<à' },
-  { name: 'Tarefas', href: ROUTES.tasks, icon: '' },
-  { name: 'Metas', href: ROUTES.goals, icon: '<¯' },
-  { name: 'Notas', href: ROUTES.notes, icon: '=Ý' },
-  { name: 'Hábitos', href: ROUTES.habits, icon: '=' },
-  { name: 'Calendário', href: ROUTES.calendar, icon: '=Å' },
-]
+import { useNotesStore } from '@/stores/notes-store'
+import { useMemo } from 'react'
 
 export function Sidebar() {
+  const { notes } = useNotesStore()
+  
+  const unprocessedCount = useMemo(() => {
+    return notes.filter(note => note.tipo === 'rapida').length
+  }, [notes])
+
+  const navigation = [
+    { name: 'Dashboard', href: ROUTES.dashboard, icon: 'ðŸ ' },
+    { name: 'Inbox GTD', href: '/inbox', icon: 'ðŸ“¥', badge: unprocessedCount > 0 ? unprocessedCount : undefined },
+    { name: 'Tarefas', href: ROUTES.tasks, icon: 'âœ…' },
+    { name: 'Metas', href: ROUTES.goals, icon: 'ðŸŽ¯' },
+    { name: 'Notas', href: ROUTES.notes, icon: 'ðŸ“' },
+    { name: 'HÃ¡bitos', href: ROUTES.habits, icon: 'ðŸ”„' },
+    { name: 'CalendÃ¡rio', href: ROUTES.calendar, icon: 'ðŸ“…' },
+  ]
+
   const currentPath = window.location.pathname
 
   return (
@@ -30,7 +39,12 @@ export function Sidebar() {
                 )}
               >
                 <span className="mr-3 text-lg">{item.icon}</span>
-                {item.name}
+                <span className="flex-1">{item.name}</span>
+                {item.badge && (
+                  <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2">
+                    {item.badge}
+                  </span>
+                )}
               </a>
             ))}
           </nav>

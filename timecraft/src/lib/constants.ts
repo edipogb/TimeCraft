@@ -52,13 +52,47 @@ export const CATEGORIAS_PARA = {
 } as const
 
 export const QUICK_CAPTURE_SHORTCUTS = {
-  task: ['fazer', 'tarefa', 'todo', 'completar', 'terminar'],
-  note: ['nota', 'lembrar', 'anotar', 'observação'],
-  goal: ['meta', 'objetivo', 'alcançar', 'conquistar']
+  task: ['fazer', 'tarefa', 'todo', 'completar', 'terminar', 'comprar', 'ligar', 'enviar', 'pagar', 'agendar'],
+  note: ['nota', 'lembrar', 'anotar', 'observação', 'informação', 'referência'],
+  goal: ['meta', 'objetivo', 'alcançar', 'conquistar', 'atingir', 'conseguir']
+} as const
+
+// AIDEV-NOTE: Templates de comando para Quick Capture GTD
+export const QUICK_CAPTURE_TEMPLATES = {
+  '/tarefa': 'Fazer [sua tarefa]',
+  '/meta': 'Alcançar [seu objetivo]', 
+  '/habito': '[atividade] diariamente',
+  '/lembrete': 'Lembrar de [algo]',
+  '/comprar': 'Comprar [item]',
+  '/ligar': 'Ligar para [pessoa/empresa]',
+  '/email': 'Enviar email para [destinatário]'
+} as const
+
+// Níveis de energia GTD
+export const ENERGIA_GTD = {
+  baixa: { 
+    label: 'Baixa', 
+    description: 'Tarefas rápidas e simples (5-15 min)',
+    icon: '🟢',
+    examples: ['ligar', 'email', 'comprar', 'confirmar']
+  },
+  media: { 
+    label: 'Média', 
+    description: 'Tarefas que requerem foco moderado (30-60 min)',
+    icon: '🟡',
+    examples: ['organizar', 'revisar', 'responder']
+  },
+  alta: { 
+    label: 'Alta', 
+    description: 'Trabalho criativo e estratégico (1-3 horas)',
+    icon: '🔴',
+    examples: ['escrever', 'planejar', 'criar', 'analisar']
+  }
 } as const
 
 export const ROUTES = {
   dashboard: '/',
+  inbox: '/inbox',
   tasks: '/tasks',
   goals: '/goals', 
   notes: '/notes',

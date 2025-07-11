@@ -42,20 +42,21 @@ export function LoginForm() {
         await signIn(data.email, data.password)
         toast.success(MESSAGES.auth.login_success)
       }
-    } catch (error: any) {
-      console.error('Auth error:', error.message)
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      console.error('Auth error:', errorMessage)
       
       // Traduzir mensagens de erro comuns
-      let errorMessage = MESSAGES.auth.error_generic
-      if (error.message.includes('Invalid login credentials')) {
-        errorMessage = MESSAGES.auth.error_invalid_credentials
-      } else if (error.message.includes('User already registered')) {
-        errorMessage = MESSAGES.auth.error_email_exists
-      } else if (error.message.includes('Password should be at least')) {
-        errorMessage = MESSAGES.auth.error_weak_password
+      let translatedErrorMessage = MESSAGES.auth.error_generic
+      if (errorMessage.includes('Invalid login credentials')) {
+        translatedErrorMessage = MESSAGES.auth.error_invalid_credentials
+      } else if (errorMessage.includes('User already registered')) {
+        translatedErrorMessage = MESSAGES.auth.error_email_exists
+      } else if (errorMessage.includes('Password should be at least')) {
+        translatedErrorMessage = MESSAGES.auth.error_weak_password
       }
       
-      toast.error(errorMessage)
+      toast.error(translatedErrorMessage)
     } finally {
       setLoading(false)
     }
