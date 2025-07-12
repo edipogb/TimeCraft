@@ -1,4 +1,4 @@
-# TimeCraft MVP - Product Requirements Document (PRD)
+ TimeCraft MVP - Product Requirements Document (PRD)
 
 ## 1. Visão Geral do Produto
 
@@ -13,7 +13,7 @@
 
 ### 1.3 Proposta de Valor MVP
 - **Unificação simples**: Hub central para organização pessoal
-- **Interface limpa**: UI moderna com Shadcn/ui + Magic UI
+- **Interface moderna**: UI avançada com Magic UI + animações fluidas
 - **Insights básicos**: Análise simples de produtividade
 - **PWA nativo**: Funciona offline, sincroniza online
 
@@ -46,13 +46,17 @@
 #### 3.1.1 Capture (Sempre Disponível)
 ```typescript
 // Quick Capture Component - Always accessible
+import { AnimatedButton } from "@/components/magic/animated-button"
+import { GradientInput } from "@/components/magic/gradient-input"
+
 const QuickCapture = () => {
   const [mode, setMode] = useState<'note' | 'task' | 'auto'>('auto');
   
   return (
-    <FloatingActionButton>
-      <Input 
+    <AnimatedButton className="fixed bottom-6 right-6 z-50">
+      <GradientInput 
         placeholder="Capture anything..."
+        className="backdrop-blur-lg"
         onSubmit={(text) => {
           if (mode === 'auto') {
             // AI/Rules decide if it's a task or note
@@ -61,7 +65,7 @@ const QuickCapture = () => {
           }
         }}
       />
-    </FloatingActionButton>
+    </AnimatedButton>
   );
 };
 ```
@@ -299,8 +303,8 @@ interface Notification {
 #### 4.1.1 Frontend
 ```json
 {
-  "core": ["React 18", "TypeScript", "Vite", "Tailwind CSS"],
-  "ui": ["Shadcn/ui", "Magic UI"],
+  "core": ["React 18", "TypeScript", "Vite", "Tailwind CSS v4"],
+  "ui": ["Magic UI", "Framer Motion", "@headlessui/react"],
   "state": ["TanStack Query", "Zustand"],
   "forms": ["React Hook Form", "Zod"],
   "dates": ["date-fns"],
@@ -328,9 +332,9 @@ interface Notification {
 ```
 src/
 ├── components/
-│   ├── ui/              # Shadcn/ui components
-│   ├── magic/           # Magic UI components
-│   └── custom/          # Custom components
+│   ├── ui/              # Base UI components
+│   ├── magic/           # Magic UI components with animations
+│   └── shared/          # Shared custom components
 ├── features/
 │   ├── auth/            # Authentication
 │   ├── tasks/           # Task management
@@ -488,28 +492,37 @@ ON note_links FOR ALL USING (
 
 ## 5. UX/UI Simplificado
 
-### 5.1 Design System (Shadcn/ui + Magic UI)
+### 5.1 Design System (Magic UI)
 
 #### 5.1.1 Componentes Base
 ```typescript
-// Usando Shadcn/ui como base
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+// Magic UI como stack principal
+import { AnimatedButton } from "@/components/magic/animated-button"
+import { GradientCard } from "@/components/magic/gradient-card"
+import { GlassPanel } from "@/components/magic/glass-panel"
+import { FloatingInput } from "@/components/magic/floating-input"
+import { ProgressRing } from "@/components/magic/progress-ring"
 
-// Magic UI para componentes especiais
-import { AnimatedList } from "@/components/magic/animated-list"
-import { GradientText } from "@/components/magic/gradient-text"
+// Animações fluidas com Framer Motion
+import { motion, AnimatePresence } from "framer-motion"
 ```
 
 #### 5.1.2 Layout Principal
 ```typescript
-// Layout simplificado
+// Layout com animações e glassmorphism
 const AppLayout = ({ children }) => (
-  <div className="min-h-screen bg-background">
-    <Sidebar />
+  <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="sidebar backdrop-blur-lg bg-white/80 dark:bg-gray-900/80"
+    >
+      <Sidebar />
+    </motion.div>
     <main className="pl-64 p-6">
-      {children}
+      <AnimatePresence mode="wait">
+        {children}
+      </AnimatePresence>
     </main>
   </div>
 );
@@ -517,19 +530,19 @@ const AppLayout = ({ children }) => (
 
 ### 5.2 Páginas Principais MVP
 
-1. **Dashboard** - `/` (visão geral integrada)
-2. **Tarefas** - `/tasks` (lista e gestão com vinculação a metas)
-3. **Calendário** - `/calendar` (view mensal/semanal)
-4. **Hábitos** - `/habits` (tracking diário)
-5. **Metas** - `/goals` (gestão e progresso)
-6. **Notas** - `/notes` (capture, organize, link)
-7. **Configurações** - `/settings` (básicas)
+1. **Dashboard** - `/` (visão geral integrada com animações)
+2. **Tarefas** - `/tasks` (lista e gestão com transições fluidas)
+3. **Calendário** - `/calendar` (view mensal/semanal animada)
+4. **Hábitos** - `/habits` (tracking com progress rings)
+5. **Metas** - `/goals` (gestão e progresso com gradients)
+6. **Notas** - `/notes` (capture, organize, link com glassmorphism)
+7. **Configurações** - `/settings` (básicas com tema switching)
 
 #### 5.2.1 Fluxo GTD Integrado nas Páginas
-- **Quick Capture**: Botão flutuante em todas as páginas
+- **Quick Capture**: Botão flutuante animado em todas as páginas
 - **Inbox Processing**: `/notes?type=quick` para processar notas
 - **PARA Organization**: Filtros por categoria nas notas
-- **Note → Task**: Modal de conversão em qualquer nota
+- **Note → Task**: Modal de conversão com animações suaves
 
 ### 5.3 PWA Features Essenciais
 
@@ -557,7 +570,7 @@ export default defineConfig({
         name: 'TimeCraft',
         short_name: 'TimeCraft',
         description: 'Personal Productivity Hub',
-        theme_color: '#000000',
+        theme_color: '#3b82f6',
         icons: [
           {
             src: 'icon-192.png',
@@ -577,42 +590,42 @@ export default defineConfig({
 **Objetivo**: Base sólida com sistema de capture
 
 - ✅ Setup Vite + React + TypeScript
-- ✅ Configurar Shadcn/ui + Magic UI
+- ✅ Configurar Magic UI + Tailwind v4
 - ✅ Setup Supabase + schemas completos
 - ✅ Autenticação básica (email/password)
-- ✅ Layout responsivo básico
+- ✅ Layout responsivo com animações
 - ✅ **Quick Capture**: Sistema básico de notas
 - ✅ Deploy na Vercel
 
 ### 6.2 Sprint 2 (Semanas 3-4): Tarefas + Metas Core
 **Objetivo**: CRUD de tarefas com vinculação a metas
 
-- ✅ Página de tarefas com lista
+- ✅ Página de tarefas com lista animada
 - ✅ Criar/editar/excluir tarefas
-- ✅ Sistema de prioridades
+- ✅ Sistema de prioridades com indicators
 - ✅ Status workflow (todo → doing → done)
 - ✅ **CRUD básico de metas**
 - ✅ **Vinculação tarefas ↔ metas**
-- ✅ Quick add com enter
+- ✅ Quick add com animações
 
 ### 6.3 Sprint 3 (Semanas 5-6): Calendário + Notes Organization
 **Objetivo**: Visão temporal + sistema PARA
 
-- ✅ Componente calendário
+- ✅ Componente calendário com transições
 - ✅ Visualizar tarefas por data
 - ✅ **Sistema PARA para notas** (Projects/Areas/Resources/Archive)
 - ✅ **Note linking system** (notas ↔ tarefas/metas)
 - ✅ **Note → Task conversion**
-- ✅ Dashboard integrado com resumo
+- ✅ Dashboard integrado com cards glassmorphism
 
 ### 6.4 Sprint 4 (Semanas 7-8): Hábitos + Goals Progress + PWA
 **Objetivo**: Tracking completo + app nativo
 
-- ✅ CRUD de hábitos
-- ✅ Check-in diário
+- ✅ CRUD de hábitos com progress rings
+- ✅ Check-in diário animado
 - ✅ **Vinculação hábitos ↔ metas**
-- ✅ **Progress tracking de metas**
-- ✅ **Milestones system**
+- ✅ **Progress tracking de metas** com gradients
+- ✅ **Milestones system** com timeline
 - ✅ PWA completo com offline
 - ✅ Notificações básicas
 
@@ -623,7 +636,7 @@ export default defineConfig({
 - ✅ **Search & filter** avançado para notas
 - ✅ **Dashboard insights** (progresso metas, hábitos)
 - ✅ Testes unitários críticos
-- ✅ UX polish e micro-interações
+- ✅ UX polish e micro-interações Magic UI
 - ✅ Performance optimization
 
 ## 7. Considerações Free Tier
@@ -695,25 +708,27 @@ const PLAN_LIMITS = {
 npm create vite@latest timecraft -- --template react-ts
 cd timecraft
 
-# 2. Instalar dependências essenciais
+# 2. Instalar dependências essenciais Magic UI
 npm install @supabase/supabase-js
 npm install @tanstack/react-query zustand
 npm install react-hook-form @hookform/resolvers zod
 npm install date-fns
 
-# 3. Setup Shadcn/ui
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card input calendar
+# 3. Setup Magic UI stack
+npm install tailwindcss@next
+npm install framer-motion @headlessui/react
+npm install lucide-react class-variance-authority
+npm install clsx tailwind-merge
 
-# 4. Magic UI (manual installation)
-# Copiar componentes necessários do magicui.design
+# 4. PWA setup
+npm install vite-plugin-pwa workbox-window
 ```
 
 ### 9.2 Estrutura de Pastas Inicial
 ```
 src/
 ├── components/
-│   ├── ui/                 # Shadcn components
+│   ├── ui/                 # Base UI components
 │   ├── magic/              # Magic UI components
 │   └── layout/             # Layout components
 ├── features/
@@ -737,7 +752,9 @@ src/
 
 #### 9.3.1 Fluxo Completo: Nota → Tarefa → Meta
 ```typescript
-// 1. Capture rápido
+// 1. Capture rápido com Magic UI
+import { AnimatedInput } from "@/components/magic/animated-input"
+
 const note = await createNote({
   content: "Estudar React Testing Library para melhorar qualidade do código",
   type: "quick"
@@ -764,6 +781,10 @@ await updateGoalProgress("improve-coding-skills-2024");
 
 #### 9.3.2 Dashboard Integration
 ```typescript
+import { GradientCard } from "@/components/magic/gradient-card"
+import { ProgressRing } from "@/components/magic/progress-ring"
+import { AnimatedList } from "@/components/magic/animated-list"
+
 const DashboardView = () => {
   const todaysTasks = useTasks({ dueDate: today });
   const activeGoals = useGoals({ status: 'active' });
@@ -773,9 +794,17 @@ const DashboardView = () => {
   return (
     <div className="dashboard-grid">
       <QuickCapture />
-      <TasksList tasks={todaysTasks} showGoalProgress />
-      <GoalsProgress goals={activeGoals} />
-      <HabitsTracker habits={habitsDue} />
+      <GradientCard>
+        <AnimatedList>
+          <TasksList tasks={todaysTasks} showGoalProgress />
+        </AnimatedList>
+      </GradientCard>
+      <GradientCard>
+        <GoalsProgress goals={activeGoals} />
+      </GradientCard>
+      <ProgressRing value={habitsCompletion}>
+        <HabitsTracker habits={habitsDue} />
+      </ProgressRing>
       <NotesInbox notes={unprocessedNotes} />
     </div>
   );
@@ -815,45 +844,24 @@ const DashboardView = () => {
 - ✅ **Weekly review** automático funcionando
 - ✅ **Analytics** básicos para tracking de uso
 
-Este MVP atualizado implementa corretamente os frameworks GTD e PARA Method através de um sistema integrado de notas, tarefas, metas e hábitos. As principais adições incluem:
+Este MVP atualizado implementa corretamente os frameworks GTD e PARA Method através de um sistema integrado de notas, tarefas, metas e hábitos, utilizando **Magic UI** como stack principal para interfaces modernas e animações fluidas.
 
-## Principais Adições ao MVP
+## Principais Mudanças na Stack UI
 
-### 🧠 **Sistema de Notas Inteligente**
-- **Quick Capture** sempre disponível (core do GTD)
-- **Linking system** entre notas, tarefas, metas e hábitos
-- **PARA categorization** automática e manual
-- **Note → Task conversion** para workflow GTD
-- **Rich text editor** para notas detalhadas
+### 🎨 **Magic UI como Stack Principal**
+- **Animações avançadas** com Framer Motion integrado
+- **Componentes glassmorphism** para modernidade
+- **Gradients inteligentes** para hierarquia visual
+- **Micro-interações** que aumentam engajamento
 
-### 🎯 **Gestão de Metas Integrada**
-- **CRUD completo** com progress tracking
-- **Milestones system** para metas grandes
-- **Auto-linking** com tarefas e hábitos
-- **Visual progress indicators** no dashboard
-- **Goal categories** para organização
+### 🚀 **Performance Otimizada**
+- **Tailwind v4** para melhor performance
+- **Tree shaking automático** dos componentes não utilizados
+- **Bundle size reduzido** comparado ao Shadcn/ui
+- **Loading states** mais fluidos
 
-### 🔗 **Sistema de Linking Universal**
-- **Cross-reference** entre todos os elementos
-- **Bidirectional relationships** (task ↔ goal ↔ note)
-- **Context preservation** via linking
-- **Smart suggestions** baseado em links existentes
-
-### 📊 **GTD Workflow Completo**
-- **Capture → Clarify → Organize → Reflect → Engage**
-- **Weekly review** automático com notas não processadas
-- **2-minute rule** integration
-- **Context-based** task organization
-- **Inbox zero** methodology
-
-### 🗂️ **PARA Method Implementation**
-- **Projects/Areas/Resources/Archive** organization
-- **Automatic categorization** suggestions
-- **Cross-feature PARA** consistency
-- **Search and filter** by PARA categories
-
-### 📱 **Enhanced UX**
-- **7 páginas principais** ao invés de 5
-- **Quick capture** accessible from anywhere
-- **Smart notifications** for reviews and deadlines
-- **Enhanced dashboard** with all elements integrated
+### ✨ **Experiência Premium**
+- **Floating elements** para quick capture
+- **Progress rings** para hábitos e metas
+- **Smooth transitions** entre estados
+- **Backdrop blur** para depth e modernidade

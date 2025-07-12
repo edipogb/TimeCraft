@@ -11,7 +11,7 @@
 TimeCraft é uma aplicação pessoal de produtividade que unifica gestão de tarefas, agenda, hábitos e metas em uma experiência integrada. Implementa metodologias GTD (Getting Things Done) e PARA Method com interface moderna e PWA nativo. Componentes principais:
 
 - **src/features**: Módulos organizados por funcionalidade (tasks, goals, notes, habits, calendar)
-- **src/components**: Componentes reutilizáveis UI (Shadcn/ui + Magic UI)
+- **src/components**: Componentes reutilizáveis UI (Magic UI)
 - **src/lib**: Configurações, utilitários e helpers (Supabase, GTD, PARA)
 - **src/stores**: Gerenciamento de estado global (Zustand)
 - **src/hooks**: Hooks customizados para lógica reutilizável
@@ -97,7 +97,7 @@ async function handleCreateTask(data: TaskData) {
 | Diretório                         | Descrição                                       |
 | --------------------------------- | ------------------------------------------------- |
 | `src/features/`               | Módulos organizados por funcionalidade (tasks, goals, notes, habits, calendar, dashboard, auth)             |
-| `src/components/ui/`          | Componentes Shadcn/ui (auto-gerados)     |
+| `src/components/ui/`          | Componentes base UI (Magic UI)     |
 | `src/components/magic/`       | Componentes Magic UI customizados            |
 | `src/components/shared/`      | Componentes compartilhados (QuickCapture, etc)   |
 | `src/components/layout/`      | Layouts da aplicação (AppLayout, Sidebar, etc)            |
@@ -283,8 +283,8 @@ Esta seção fornece ponteiros para arquivos importantes e padrões comuns no co
 *   **Quick Capture**: Botão flutuante sempre disponível para captura rápida seguindo metodologia GTD.
 *   **PARA**: Método de organização (Projects/Areas/Resources/Archive) implementado nas notas.
 *   **GTD**: Getting Things Done - metodologia de produtividade implementada via capture → clarify → organize → reflect → engage.
-*   **Shadcn/ui**: Biblioteca de componentes UI copiáveis e customizáveis usado como base.
-*   **Magic UI**: Componentes avançados com animações para experiência premium.
+*   **Componentes UI**: Componentes modernos compatíveis com Magic UI e Tailwind 4.
+*   **Magic UI**: Biblioteca principal de componentes UI com animações avançadas e compatibilidade Tailwind 4.
 *   **Zustand**: Biblioteca de state management leve e performática.
 *   **TanStack Query**: Biblioteca para data fetching com cache e sincronização.
 

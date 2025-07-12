@@ -6,7 +6,7 @@ const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     <div
       ref={ref}
       className={cn(
-        'rounded-lg border border-gray-200 bg-white text-gray-900 shadow-sm',
+        'rounded-lg border border-border bg-card text-card-foreground shadow-sm',
         className
       )}
       {...props}
@@ -31,7 +31,7 @@ const CardTitle = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLHeadingEle
     <h3
       ref={ref}
       className={cn(
-        'text-lg font-semibold leading-none tracking-tight',
+        'text-2xl font-semibold leading-none tracking-tight',
         className
       )}
       {...props}
@@ -44,7 +44,7 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-gray-500', className)}
+      className={cn('text-sm text-muted-foreground', className)}
       {...props}
     />
   )
@@ -58,4 +58,15 @@ const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 )
 CardContent.displayName = 'CardContent'
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent }
+const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn('flex items-center p-6 pt-0', className)}
+      {...props}
+    />
+  )
+)
+CardFooter.displayName = 'CardFooter'
+
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }

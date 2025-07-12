@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useNotesStore } from '@/stores/notes-store'
 import { QUICK_CAPTURE_SHORTCUTS } from '@/lib/constants'
 import { MESSAGES } from '@/lib/messages'
+import { cn } from '@/lib/utils'
 
 const quickCaptureSchema = z.object({
   conteudo: z.string().min(1, MESSAGES.capture.error_content_required),
@@ -74,70 +76,200 @@ export function QuickCapture() {
 
   if (!isExpanded) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={() => setIsExpanded(true)}
-          size="lg"
-          className="rounded-full h-14 w-14 shadow-lg hover:shadow-xl transition-shadow"
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className="fixed bottom-6 right-6 z-50"
+      >
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative"
         >
-          
-        </Button>
-      </div>
+          <Button
+            onClick={() => setIsExpanded(true)}
+            size="lg"
+            className="rounded-full h-16 w-16 bg-primary hover:bg-primary/90 shadow-2xl hover:shadow-3xl transition-all duration-300 border-0 group overflow-hidden relative"
+          >
+            {/* Efeito de brilho */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/25 to-primary-foreground/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+            
+            {/* Ícone */}
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="relative z-10"
+            >
+              <span className="text-2xl">💭</span>
+            </motion.div>
+          </Button>
+          
+          {/* Pulse animado */}
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute inset-0 rounded-full bg-primary/60 -z-10"
+          />
+        </motion.div>
+      </motion.div>
     )
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-80">
-      <Card className="shadow-lg">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center justify-between">
-            Captura Rápida
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsExpanded(false)}
-            >
-              
-            </Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <Input
-              {...form.register('titulo')}
-              placeholder={MESSAGES.capture.placeholder_title}
-              disabled={loading}
-            />
-            
-            <Textarea
-              {...form.register('conteudo')}
-              placeholder={MESSAGES.capture.placeholder_content}
-              rows={3}
-              disabled={loading}
-            />
-            
-            {form.formState.errors.conteudo && (
-              <p className="text-sm text-red-500">
-                {form.formState.errors.conteudo.message}
-              </p>
-            )}
-
-            <div className="flex gap-2">
-              <Button type="submit" disabled={loading} className="flex-1">
-                {loading ? MESSAGES.capture.loading : MESSAGES.capture.button_capture}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsExpanded(false)}
-                disabled={loading}
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0, y: 20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      exit={{ scale: 0.8, opacity: 0, y: 20 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      className="fixed bottom-6 right-6 z-50 w-96"
+    >
+      <Card className="bg-card/90 backdrop-blur-xl shadow-2xl border border-border overflow-hidden">
+        {/* Header com gradiente */}
+        <CardHeader className="bg-primary text-primary-foreground pb-4">
+          <CardTitle className="text-xl flex items-center justify-between font-semibold">
+            <div className="flex items-center gap-3">
+              <motion.span
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-2xl"
               >
-                {MESSAGES.capture.button_cancel}
-              </Button>
+                ⚡
+              </motion.span>
+              Quick Capture
             </div>
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsExpanded(false)}
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors p-1 rounded-full hover:bg-primary-foreground/20"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </motion.button>
+          </CardTitle>
+          <p className="text-primary-foreground/80 text-sm mt-1">
+            Capture suas ideias instantaneamente
+          </p>
+        </CardHeader>
+
+        <CardContent className="p-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Campo título */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Input
+                {...form.register('titulo')}
+                placeholder={MESSAGES.capture.placeholder_title}
+                disabled={loading}
+                className="bg-card/70 backdrop-blur-sm border-border focus:border-primary focus:bg-card/90 transition-all duration-200"
+              />
+            </motion.div>
+            
+            {/* Campo conteúdo */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Textarea
+                {...form.register('conteudo')}
+                placeholder={MESSAGES.capture.placeholder_content}
+                rows={4}
+                disabled={loading}
+                className="bg-card/70 backdrop-blur-sm border-border focus:border-primary focus:bg-card/90 transition-all duration-200 resize-none"
+              />
+            </motion.div>
+            
+            {/* Erro de validação */}
+            <AnimatePresence>
+              {form.formState.errors.conteudo && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20"
+                >
+                  <span>⚠️</span>
+                  {form.formState.errors.conteudo.message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Dicas de uso */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="bg-primary/5 p-3 rounded-lg border border-primary/20"
+            >
+              <div className="text-xs text-primary">
+                <div className="font-medium mb-1">💡 Dicas rápidas:</div>
+                <div className="space-y-1">
+                  <div>• Use "fazer", "completar" para tarefas automáticas</div>
+                  <div>• Use "objetivo", "meta" para metas automáticas</div>
+                  <div>• Sem palavras-chave = processamento manual</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Botões de ação */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex gap-3 pt-2"
+            >
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1"
+              >
+                <Button 
+                  type="submit" 
+                  disabled={loading} 
+                  className={cn(
+                    "w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group",
+                    loading && "opacity-70 cursor-not-allowed"
+                  )}
+                >
+                  {loading && (
+                    <div className="absolute inset-0 bg-primary-foreground/10 flex items-center justify-center">
+                      <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                  
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/25 to-primary-foreground/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  
+                  <span className="relative flex items-center justify-center gap-2">
+                    {!loading && <span>💾</span>}
+                    {loading ? MESSAGES.capture.loading : MESSAGES.capture.button_capture}
+                  </span>
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsExpanded(false)}
+                  disabled={loading}
+                  className="px-6 py-3 bg-card/70 backdrop-blur-sm border-border hover:bg-card/90 transition-all duration-200"
+                >
+                  {MESSAGES.capture.button_cancel}
+                </Button>
+              </motion.div>
+            </motion.div>
           </form>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   )
 }
