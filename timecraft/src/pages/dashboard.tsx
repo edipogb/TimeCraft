@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { BlurFade } from '@/components/magicui/blur-fade'
+import { MagicCard } from '@/components/magicui/magic-card'
+import { AnimatedGridPattern } from '@/components/magicui/animated-grid-pattern'
 import { useNotesStore } from '@/stores/notes-store'
 import { cn } from '@/lib/utils'
 
@@ -20,26 +22,44 @@ export function Dashboard() {
   const unprocessedNotes = notes.filter(note => note.tipo === 'rapida')
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen">
+      <AnimatedGridPattern
+        numSquares={30}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+        className="absolute inset-0 opacity-50"
+      />
+      
       {/* Header da página */}
-      <div className="px-4 sm:px-6 py-6 border-b">
-        <BlurFade delay={0.1} inView>
+      <div className="relative z-10 px-4 sm:px-6 py-6 border-b border-border/20">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h1 className="text-2xl sm:text-4xl font-bold text-foreground">
             ✨ TimeCraft Dashboard
           </h1>
           <p className="text-muted-foreground mt-2 text-sm sm:text-lg">
             Bem-vindo ao seu hub de produtividade pessoal
           </p>
-        </BlurFade>
+        </motion.div>
       </div>
 
-      <div className="px-4 sm:px-6 py-8 space-y-8">
+      <div className="relative z-10 px-4 sm:px-6 py-8 space-y-8">
         {/* Cards de estatísticas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <BlurFade delay={0.2} inView>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="group cursor-pointer"
+          >
+            <MagicCard className="h-full" gradientFrom="#3b82f6" gradientTo="#06b6d4">
+              <Card className="h-full bg-card/90 backdrop-blur-sm border-border/50 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base sm:text-lg flex items-center gap-3">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-3 text-card-foreground">
                   <span className="text-xl sm:text-2xl">📝</span>
                   <span className="truncate">Notas de Hoje</span>
                 </CardTitle>
@@ -63,21 +83,39 @@ export function Dashboard() {
                   </span>
                 </div>
               </CardContent>
-            </Card>
-          </BlurFade>
+              </Card>
+            </MagicCard>
+          </motion.div>
 
-          <BlurFade delay={0.3} inView>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className={cn(
+              "group cursor-pointer",
+              unprocessedNotes.length > 0 && "animate-pulse"
+            )}
+          >
+            <MagicCard 
+              className="h-full" 
+              gradientFrom={unprocessedNotes.length > 0 ? "#f97316" : "#10b981"}
+              gradientTo={unprocessedNotes.length > 0 ? "#ef4444" : "#059669"}
+            >
+              <Card className="h-full bg-card/90 backdrop-blur-sm border-border/50 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-card-foreground">
                   <span className="text-xl sm:text-2xl">
                     {unprocessedNotes.length > 0 ? "📥" : "✅"}
                   </span>
                   <span className="truncate">Inbox GTD</span>
                   {unprocessedNotes.length > 0 && (
-                    <span className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center ml-auto">
+                    <motion.span 
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                      className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center ml-auto"
+                    >
                       {unprocessedNotes.length > 99 ? '99+' : unprocessedNotes.length}
-                    </span>
+                    </motion.span>
                   )}
                 </CardTitle>
               </CardHeader>
@@ -89,9 +127,12 @@ export function Dashboard() {
                   {unprocessedNotes.length === 1 ? 'nota para processar' : 'notas para processar'}
                 </p>
                 {unprocessedNotes.length > 0 && (
-                  <div className="bg-warning text-warning-foreground px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-center hover:bg-warning/80 transition-colors cursor-pointer">
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-warning text-warning-foreground px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-center hover:bg-warning/80 transition-colors"
+                  >
                     👆 Processar agora
-                  </div>
+                  </motion.div>
                 )}
                 {unprocessedNotes.length === 0 && (
                   <div className="bg-success/10 text-success px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-center">
@@ -99,13 +140,20 @@ export function Dashboard() {
                   </div>
                 )}
               </CardContent>
-            </Card>
-          </BlurFade>
+              </Card>
+            </MagicCard>
+          </motion.div>
 
-          <BlurFade delay={0.4} inView>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="group cursor-pointer"
+          >
+            <MagicCard className="h-full" gradientFrom="#10b981" gradientTo="#059669">
+              <Card className="h-full bg-card/90 backdrop-blur-sm border-border/50 hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base sm:text-lg flex items-center gap-3">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-3 text-card-foreground">
                   <span className="text-xl sm:text-2xl">📊</span>
                   <span className="truncate">Total de Notas</span>
                 </CardTitle>
@@ -124,16 +172,22 @@ export function Dashboard() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
-          </BlurFade>
+              </Card>
+            </MagicCard>
+          </motion.div>
         </div>
 
         {/* Seção principal com notas recentes e próximos passos */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <BlurFade delay={0.5} inView>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <MagicCard className="h-full" gradientFrom="#6366f1" gradientTo="#8b5cf6">
+              <Card className="h-full bg-card/90 backdrop-blur-lg shadow-xl border-border/50 hover:shadow-2xl transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg sm:text-xl flex items-center gap-3">
+                <CardTitle className="text-lg sm:text-xl flex items-center gap-3 text-card-foreground">
                   <span className="text-xl sm:text-2xl">📋</span>
                   Notas Recentes
                 </CardTitle>
@@ -152,15 +206,18 @@ export function Dashboard() {
                   </div>
                 ) : (
                   <div className="space-y-3 sm:space-y-4">
-                    {notes.slice(0, 5).map((note) => (
-                      <div 
+                    {notes.slice(0, 5).map((note, index) => (
+                      <motion.div 
                         key={note.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 * index }}
                         className="group p-3 sm:p-4 rounded-xl bg-muted/30 border border-border hover:border-primary/30 hover:shadow-md transition-all duration-200"
                       >
                         <div className="flex items-start gap-3 sm:gap-4">
                           <div className="w-1 h-8 sm:h-12 bg-primary rounded-full flex-shrink-0"></div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium text-foreground text-sm mb-1 truncate">
+                            <div className="font-medium text-card-foreground text-sm mb-1 truncate">
                               {note.titulo || 'Sem título'}
                             </div>
                             <div className="text-sm text-muted-foreground line-clamp-2 mb-2">
@@ -181,17 +238,24 @@ export function Dashboard() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
-                )}              </CardContent>
+                )}
+              </CardContent>
             </Card>
-          </BlurFade>
+            </MagicCard>
+          </motion.div>
 
-          <BlurFade delay={0.6} inView>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <MagicCard className="h-full" gradientFrom="#f59e0b" gradientTo="#ef4444">
+              <Card className="h-full bg-card/90 backdrop-blur-lg shadow-xl border-border/50 hover:shadow-2xl transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg sm:text-xl flex items-center gap-3">
+                <CardTitle className="text-lg sm:text-xl flex items-center gap-3 text-card-foreground">
                   <span className="text-xl sm:text-2xl">🚀</span>
                   Próximos Passos
                 </CardTitle>
@@ -206,8 +270,11 @@ export function Dashboard() {
                     { icon: "⭕", text: "Sistema de metas", status: "pending", color: "gray" },
                     { icon: "⭕", text: "Tracking de hábitos", status: "pending", color: "gray" }
                   ].map((item, index) => (
-                    <div
+                    <motion.div
                       key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 * index }}
                       className={cn(
                         "flex items-center gap-3 sm:gap-4 p-3 rounded-lg transition-all duration-200",
                         item.color === 'green' && "bg-success/10 border border-success/20",
@@ -226,10 +293,15 @@ export function Dashboard() {
                       </span>
                       {item.status === 'progress' && (
                         <div className="w-12 sm:w-16 h-2 bg-muted rounded-full overflow-hidden flex-shrink-0">
-                          <div className="h-full bg-warning w-3/5" />
+                          <motion.div 
+                            className="h-full bg-warning"
+                            initial={{ width: 0 }}
+                            animate={{ width: "60%" }}
+                            transition={{ delay: 1, duration: 1 }}
+                          />
                         </div>
                       )}
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -241,7 +313,8 @@ export function Dashboard() {
                 </div>
               </CardContent>
             </Card>
-          </BlurFade>
+            </MagicCard>
+          </motion.div>
         </div>
       </div>
     </div>

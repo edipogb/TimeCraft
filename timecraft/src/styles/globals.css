@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
   :root {
@@ -34,12 +32,11 @@
     --error: 0 84.2% 60.2%;
     --error-foreground: 210 40% 98%;
     
-    /* Magic UI colors */
-    --color-1: #ff6b6b;
-    --color-2: #4ecdc4;
-    --color-3: #45b7d1;
-    --color-4: #96ceb4;
-    --color-5: #feca57;
+    /* PARA Method Colors - Seguindo DESIGN.md */
+    --para-projects: 221.2 83.2% 53.3%;     /* Blue #3b82f6 */
+    --para-areas: 142.1 76.2% 36.3%;        /* Green #10b981 */
+    --para-resources: 262.1 83.3% 57.8%;    /* Purple #8b5cf6 */
+    --para-archive: 215.4 16.3% 46.9%;      /* Gray #6b7280 */
   }
  
   .dark {
