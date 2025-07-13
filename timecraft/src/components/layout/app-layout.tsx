@@ -10,7 +10,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     <div className="h-screen flex overflow-hidden bg-background">
       <Sidebar />
       
-      <div className="flex flex-col w-0 flex-1 overflow-hidden md:ml-64">
+      <div className="flex flex-col flex-1 overflow-hidden md:ml-64">
         <Header />
         
         <main className="flex-1 relative overflow-y-auto focus:outline-none">

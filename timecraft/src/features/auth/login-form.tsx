@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuthStore } from '@/stores/auth-store'
 import { MESSAGES } from '@/lib/messages'
+import { BlurFade } from '@/components/magicui/blur-fade'
 
 const authSchema = z.object({
   email: z.string().email(MESSAGES.validation.invalid_email),
@@ -63,71 +64,100 @@ export function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">🚀 TimeCraft</CardTitle>
-          <CardDescription>
-            {isSignUp ? 'Criar nova conta' : 'Fazer login na sua conta'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {isSignUp && (
-              <div>
-                <Input
-                  {...form.register('fullName')}
-                  placeholder="Nome completo"
-                  disabled={loading}
-                />
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <BlurFade delay={0.1} className="w-full max-w-md">
+        <Card className="border-border/50 shadow-lg">
+          <CardHeader className="text-center space-y-2">
+            <BlurFade delay={0.2}>
+              <div className="mx-auto w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-2xl">⚡</span>
               </div>
-            )}
-            
-            <div>
-              <Input
-                {...form.register('email')}
-                type="email"
-                placeholder="Email"
-                disabled={loading}
-              />
-              {form.formState.errors.email && (
-                <p className="text-sm text-red-500 mt-1">
-                  {form.formState.errors.email.message}
-                </p>
-              )}
-            </div>
+            </BlurFade>
+            <BlurFade delay={0.3}>
+              <CardTitle className="text-2xl font-semibold tracking-tight">
+                TimeCraft
+              </CardTitle>
+            </BlurFade>
+            <BlurFade delay={0.4}>
+              <CardDescription className="text-muted-foreground">
+                {isSignUp ? 'Criar nova conta' : 'Acesse sua conta'}
+              </CardDescription>
+            </BlurFade>
+          </CardHeader>
+          <CardContent>
+            <BlurFade delay={0.5}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {isSignUp && (
+                  <div className="space-y-2">
+                    <Input
+                      {...form.register('fullName')}
+                      placeholder="Nome completo"
+                      disabled={loading}
+                      className="h-11"
+                    />
+                  </div>
+                )}
+                
+                <div className="space-y-2">
+                  <Input
+                    {...form.register('email')}
+                    type="email"
+                    placeholder="Email"
+                    disabled={loading}
+                    className="h-11"
+                  />
+                  {form.formState.errors.email && (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.email.message}
+                    </p>
+                  )}
+                </div>
 
-            <div>
-              <Input
-                {...form.register('password')}
-                type="password"
-                placeholder="Senha"
-                disabled={loading}
-              />
-              {form.formState.errors.password && (
-                <p className="text-sm text-red-500 mt-1">
-                  {form.formState.errors.password.message}
-                </p>
-              )}
-            </div>
+                <div className="space-y-2">
+                  <Input
+                    {...form.register('password')}
+                    type="password"
+                    placeholder="Senha"
+                    disabled={loading}
+                    className="h-11"
+                  />
+                  {form.formState.errors.password && (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.password.message}
+                    </p>
+                  )}
+                </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? (isSignUp ? 'Criando...' : 'Entrando...') : (isSignUp ? 'Criar Conta' : 'Entrar')}
-            </Button>
+                <Button 
+                  type="submit" 
+                  className="w-full h-11 font-medium" 
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      {isSignUp ? 'Criando conta...' : 'Entrando...'}
+                    </div>
+                  ) : (
+                    isSignUp ? 'Criar Conta' : 'Entrar'
+                  )}
+                </Button>
 
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-sm text-blue-600 hover:underline"
-                disabled={loading}
-              >
-                {isSignUp ? 'Já tem conta? Fazer login' : 'Não tem conta? Criar nova'}
-              </button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+                <div className="text-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsSignUp(!isSignUp)}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    disabled={loading}
+                  >
+                    {isSignUp ? 'Já tem conta? Fazer login' : 'Não tem conta? Criar nova'}
+                  </button>
+                </div>
+              </form>
+            </BlurFade>
+          </CardContent>
+        </Card>
+      </BlurFade>
     </div>
   )
 }

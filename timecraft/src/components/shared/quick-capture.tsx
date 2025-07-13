@@ -90,7 +90,7 @@ export function QuickCapture() {
           <Button
             onClick={() => setIsExpanded(true)}
             size="lg"
-            className="rounded-full h-16 w-16 bg-primary hover:bg-primary/90 shadow-2xl hover:shadow-3xl transition-all duration-300 border-0 group overflow-hidden relative"
+            className="rounded-full h-16 w-16 bg-primary hover:bg-primary/90 shadow-2xl hover:shadow-2xl transition-all duration-300 border-0 group overflow-hidden relative"
           >
             {/* Efeito de brilho */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/25 to-primary-foreground/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -233,7 +233,7 @@ export function QuickCapture() {
                   type="submit" 
                   disabled={loading} 
                   className={cn(
-                    "w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group",
+                    "w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 shadow-lg hover:shadow-lg transition-all duration-200 relative overflow-hidden group",
                     loading && "opacity-70 cursor-not-allowed"
                   )}
                 >

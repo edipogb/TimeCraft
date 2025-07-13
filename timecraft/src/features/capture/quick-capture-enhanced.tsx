@@ -13,6 +13,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import { useQuickCaptureDetection } from '@/hooks/use-quick-capture-detection'
 import { generateTitle, extractTags, generateMetadata, processTemplateCommand } from '@/lib/gtd-helpers'
 import { MESSAGES } from '@/lib/messages'
+import { BlurFade } from '@/components/magicui/blur-fade'
 
 // AIDEV-NOTE: Quick Capture Enhanced - implementação completa GTD + PARA com detecção inteligente
 const quickCaptureSchema = z.object({
@@ -134,28 +135,27 @@ export function QuickCaptureEnhanced() {
 
   if (!isExpanded) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <BlurFade delay={0.1} className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsExpanded(true)}
           size="lg"
-          className="rounded-full h-16 w-16 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+          className="rounded-full h-14 w-14 shadow-lg hover:shadow-xl transition-all duration-200 bg-primary hover:bg-primary/90"
         >
           <div className="flex flex-col items-center">
-            <span className="text-2xl">⚡</span>
-            <span className="text-xs font-medium">Captura</span>
+            <span className="text-xl">⚡</span>
           </div>
         </Button>
-      </div>
+      </BlurFade>
     )
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-96">
-      <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-lg">
+    <BlurFade delay={0.1} className="fixed bottom-6 right-6 z-50 w-96">
+      <Card className="shadow-xl border border-border/50 bg-card/95 backdrop-blur-sm">
         <CardHeader className="pb-3">
-          <CardTitle className="text-xl flex items-center justify-between">
+          <CardTitle className="text-lg flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">⚡</span>
+              <span className="text-xl">⚡</span>
               <span>Captura Rápida</span>
               {suggestion.confidence !== 'none' && (
                 <Badge variant={getBadgeVariant(suggestion.confidence)} className="text-xs">
@@ -167,12 +167,12 @@ export function QuickCaptureEnhanced() {
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(false)}
-              className="h-8 w-8 p-0 hover:bg-gray-100"
+              className="h-8 w-8 p-0 hover:bg-muted"
             >
               ✕
             </Button>
           </CardTitle>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Capture qualquer coisa. Use comandos: /tarefa, /meta, /habito, /lembrete
           </p>
         </CardHeader>
@@ -183,7 +183,7 @@ export function QuickCaptureEnhanced() {
               {...form.register('titulo')}
               placeholder={MESSAGES.capture.placeholder_title}
               disabled={loading}
-              className="bg-white/50 border-gray-200 focus:border-blue-400"
+              className="h-10"
             />
             
             <div className="space-y-2">
@@ -196,11 +196,11 @@ export function QuickCaptureEnhanced() {
                   form.setValue('conteudo', e.target.value)
                   handleTemplateCommand(e.target.value)
                 }}
-                className="bg-white/50 border-gray-200 focus:border-blue-400 resize-none"
+                className="resize-none"
               />
               
               {templateHint && (
-                <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
                   💡 Template: {templateHint}
                 </div>
               )}
@@ -211,7 +211,7 @@ export function QuickCaptureEnhanced() {
                 {...form.register('contexto')}
                 placeholder="Contexto (@casa, @trabalho, @telefone)"
                 disabled={loading}
-                className="bg-white/50 border-gray-200 focus:border-blue-400 flex-1"
+                className="flex-1 h-10"
               />
               
               <label className="flex items-center gap-2 text-sm">
@@ -229,22 +229,22 @@ export function QuickCaptureEnhanced() {
             {suggestion.confidence !== 'none' && (
               <div className={`border rounded-lg p-3 ${
                 suggestion.confidence === 'high' 
-                  ? 'bg-blue-50 border-blue-200' 
-                  : 'bg-gray-50 border-gray-200'
+                  ? 'bg-primary/5 border-primary/20' 
+                  : 'bg-muted/50 border-border'
               }`}>
                 <div className="flex items-center gap-2 text-sm">
                   <span>{suggestion.confidence === 'high' ? '🎯' : '💡'}</span>
-                  <span className={suggestion.confidence === 'high' ? 'text-blue-800' : 'text-gray-700'}>
+                  <span className={suggestion.confidence === 'high' ? 'text-primary' : 'text-foreground'}>
                     Parece ser uma <strong>{suggestion.type}</strong>
                     {suggestion.confidence === 'high' && ' - sugestão de alta confiança'}
                   </span>
                 </div>
-                <p className="text-xs text-gray-600 mt-1">{suggestion.reason}</p>
+                <p className="text-xs text-muted-foreground mt-1">{suggestion.reason}</p>
               </div>
             )}
 
             {form.formState.errors.conteudo && (
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-destructive">
                 {form.formState.errors.conteudo.message}
               </p>
             )}
@@ -253,38 +253,41 @@ export function QuickCaptureEnhanced() {
               <Button 
                 type="submit" 
                 disabled={loading} 
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                className="flex-1 h-10"
               >
-                {loading ? MESSAGES.capture.loading : `⚡ ${MESSAGES.capture.button_capture}`}
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    {MESSAGES.capture.loading}
+                  </div>
+                ) : (
+                  `⚡ ${MESSAGES.capture.button_capture}`
+                )}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setIsExpanded(false)}
                 disabled={loading}
-                className="border-gray-200 hover:bg-gray-50"
+                className="h-10"
               >
                 {MESSAGES.capture.button_cancel}
               </Button>
             </div>
           </form>
           
-          <div className="text-xs text-gray-500 border-t pt-3 space-y-1">
-            <div className="flex items-center gap-2">
-              <span>📥</span>
-              <span><strong>GTD:</strong> Tudo vai para seu inbox primeiro</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>🗂️</span>
-              <span><strong>PARA:</strong> Organize durante o weekly review</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>⚡</span>
-              <span><strong>Energia:</strong> Detectada automaticamente para GTD</span>
+          <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded border-l-4 border-primary/20">
+            <div className="font-medium text-foreground mb-1">💡 Dicas GTD & PARA:</div>
+            <div className="space-y-1">
+              <div>• <strong>/tarefa</strong> - Cria uma tarefa acionável</div>
+              <div>• <strong>/meta</strong> - Define um objetivo de longo prazo</div>
+              <div>• <strong>/habito</strong> - Estabelece uma rotina</div>
+              <div>• <strong>/lembrete</strong> - Agenda um lembrete</div>
+              <div>• Use <strong>@contexto</strong> para organizar por local/situação</div>
             </div>
           </div>
         </CardContent>
       </Card>
-    </div>
+    </BlurFade>
   )
 }
