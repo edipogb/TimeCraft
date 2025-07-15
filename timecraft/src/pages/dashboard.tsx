@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { MagicCard } from '@/components/ui/magic-card'
 import { useNotesStore } from '@/stores/notes-store'
 import { cn } from '@/lib/utils'
 
@@ -35,7 +36,7 @@ export function Dashboard() {
       <div className="space-y-8 px-4 py-8 sm:px-6">
         {/* Cards de estatísticas */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="from-card to-primary/5 border-border border bg-gradient-to-br shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+          <MagicCard className="from-card to-primary/5 border-border border bg-gradient-to-br shadow-md">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="from-primary to-primary/80 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg">
@@ -67,11 +68,11 @@ export function Dashboard() {
                 </span>
               </div>
             </CardContent>
-          </Card>
+          </MagicCard>
 
-          <Card
+          <MagicCard
             className={cn(
-              'border-border border shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl',
+              'border-border border shadow-md',
               unprocessedNotes.length > 0
                 ? 'from-card to-warning/5 bg-gradient-to-br'
                 : 'from-card to-success/5 bg-gradient-to-br'
@@ -126,9 +127,9 @@ export function Dashboard() {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </MagicCard>
 
-          <Card className="from-card to-info/5 border-border border bg-gradient-to-br shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+          <MagicCard className="from-card to-info/5 border-border border bg-gradient-to-br shadow-md">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="from-info to-info/80 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg">
@@ -159,7 +160,7 @@ export function Dashboard() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </MagicCard>
         </div>
 
         {/* Seção principal com notas recentes e próximos passos */}

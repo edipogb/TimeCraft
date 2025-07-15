@@ -20,6 +20,7 @@ import {
 import { MESSAGES } from '@/lib/messages'
 import { BlurFade } from '@/components/magicui/blur-fade'
 import { AnimatedGridPattern } from '@/components/magicui/animated-grid-pattern'
+import { ShimmerButton } from '@/components/magicui/shimmer-button'
 
 // AIDEV-NOTE: Quick Capture Enhanced - implementação completa GTD + PARA com detecção inteligente
 const quickCaptureSchema = z.object({
@@ -293,7 +294,13 @@ export function QuickCaptureEnhanced() {
             )}
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={loading} className="h-10 flex-1">
+              <ShimmerButton 
+                type="submit" 
+                disabled={loading} 
+                className="h-10 flex-1"
+                shimmerColor="#ffffff"
+                background="linear-gradient(to right, #3b82f6, #2563eb)"
+              >
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -302,7 +309,7 @@ export function QuickCaptureEnhanced() {
                 ) : (
                   `⚡ ${MESSAGES.capture.button_capture}`
                 )}
-              </Button>
+              </ShimmerButton>
               <Button
                 type="button"
                 variant="outline"

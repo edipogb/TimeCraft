@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { ShimmerButton } from '@/components/magicui/shimmer-button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -242,13 +243,15 @@ export function QuickCapture() {
                 whileTap={{ scale: 0.98 }}
                 className="flex-1"
               >
-                <Button
+                <ShimmerButton
                   type="submit"
                   disabled={loading}
                   className={cn(
-                    'bg-primary hover:bg-primary/90 text-primary-foreground group relative w-full overflow-hidden py-3 font-semibold shadow-lg transition-all duration-200 hover:shadow-lg',
+                    'w-full py-3 font-semibold',
                     loading && 'cursor-not-allowed opacity-70'
                   )}
+                  shimmerColor="#ffffff"
+                  background="linear-gradient(to right, #3b82f6, #2563eb)"
                 >
                   {loading && (
                     <div className="bg-primary-foreground/10 absolute inset-0 flex items-center justify-center">
@@ -256,15 +259,13 @@ export function QuickCapture() {
                     </div>
                   )}
 
-                  <div className="from-primary-foreground/0 via-primary-foreground/25 to-primary-foreground/0 absolute inset-0 -translate-x-full -skew-x-12 bg-gradient-to-r transition-transform duration-700 group-hover:translate-x-full" />
-
                   <span className="relative flex items-center justify-center gap-2">
                     {!loading && <span>💾</span>}
                     {loading
                       ? MESSAGES.capture.loading
                       : MESSAGES.capture.button_capture}
                   </span>
-                </Button>
+                </ShimmerButton>
               </motion.div>
 
               <motion.div
