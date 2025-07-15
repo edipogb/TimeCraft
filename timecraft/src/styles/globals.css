@@ -264,18 +264,53 @@
   background-color: hsl(var(--color-accent-foreground));
 }
 
-/* AIDEV-NOTE: Legacy glassmorphism support - keeping for existing components */
-/* AIDEV-NOTE: These variables should be gradually phased out in favor of bg-card/bg-primary */
-:root {
-  --glass-bg: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(59, 130, 246, 0.15);
-  --shadow: rgba(0, 0, 0, 0.12);
-}
+/* AIDEV-NOTE: Glassmorphism utilities - DESIGN.md compliant glass effects */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .dark .glass {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(241, 245, 249, 0.1);
+  }
+  
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .dark .glass-panel {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(241, 245, 249, 0.1);
+  }
+  
+  .btn-gradient {
+    background: linear-gradient(to right, hsl(var(--color-primary)), hsl(var(--color-primary) / 0.8));
+  }
+  
+  .btn-gradient:hover {
+    background: linear-gradient(to right, hsl(var(--color-primary) / 0.9), hsl(var(--color-primary)));
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --glass-bg: rgba(30, 41, 59, 0.95);
-    --glass-border: rgba(59, 130, 246, 0.3);
-    --shadow: rgba(0, 0, 0, 0.6);
+  /* Enhanced button hover effects */
+  .btn-hover:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease;
+  }
+
+  /* Focus states for better accessibility */
+  .focus-ring:focus {
+    border-color: hsl(var(--color-primary));
+    box-shadow: 0 0 0 2px hsl(var(--color-primary) / 0.2);
+    transition: all 0.2s ease;
   }
 }

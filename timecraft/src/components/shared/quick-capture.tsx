@@ -93,7 +93,7 @@ export function QuickCapture() {
           <Button
             onClick={() => setIsExpanded(true)}
             size="lg"
-            className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary group relative h-16 w-16 overflow-hidden rounded-full border-0 bg-gradient-to-br shadow-2xl transition-all duration-300 hover:shadow-2xl"
+            className="btn-gradient h-14 w-14 rounded-full shadow-2xl hover:shadow-2xl hover:-translate-y-1 hover:scale-110 transition-all duration-300 border-0 text-white text-xl"
           >
             {/* Efeito de brilho */}
             <div className="absolute inset-0 -translate-x-full -skew-x-12 bg-gradient-to-r from-white/0 via-white/25 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
@@ -127,9 +127,9 @@ export function QuickCapture() {
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       className="fixed right-6 bottom-6 z-50 w-96"
     >
-      <Card className="bg-card border-border overflow-hidden border shadow-2xl backdrop-blur-xl">
+      <Card className="glass-panel border-0 shadow-2xl w-96">
         {/* Header com gradiente */}
-        <CardHeader className="bg-primary text-primary-foreground pb-4">
+        <CardHeader className="btn-gradient text-white rounded-t-2xl pb-4">
           <CardTitle className="flex items-center justify-between text-xl font-semibold">
             <div className="flex items-center gap-3">
               <motion.span
@@ -179,7 +179,7 @@ export function QuickCapture() {
                 {...form.register('titulo')}
                 placeholder={MESSAGES.capture.placeholder_title}
                 disabled={loading}
-                className="bg-background border-border focus:border-primary focus:ring-primary/20 transition-all duration-200 focus:ring-2"
+                className="glass border-border/50 focus-ring"
               />
             </motion.div>
 
@@ -194,7 +194,7 @@ export function QuickCapture() {
                 placeholder={MESSAGES.capture.placeholder_content}
                 rows={4}
                 disabled={loading}
-                className="bg-background border-border focus:border-primary focus:ring-primary/20 resize-none transition-all duration-200 focus:ring-2"
+                className="glass border-border/50 focus-ring resize-none"
               />
             </motion.div>
 

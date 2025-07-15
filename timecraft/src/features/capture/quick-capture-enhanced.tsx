@@ -19,6 +19,7 @@ import {
 } from '@/lib/gtd-helpers'
 import { MESSAGES } from '@/lib/messages'
 import { BlurFade } from '@/components/magicui/blur-fade'
+import { AnimatedGridPattern } from '@/components/magicui/animated-grid-pattern'
 
 // AIDEV-NOTE: Quick Capture Enhanced - implementação completa GTD + PARA com detecção inteligente
 const quickCaptureSchema = z.object({
@@ -156,7 +157,7 @@ export function QuickCaptureEnhanced() {
         <Button
           onClick={() => setIsExpanded(true)}
           size="lg"
-          className="bg-primary hover:bg-primary/90 h-14 w-14 rounded-full shadow-lg transition-all duration-200 hover:shadow-xl"
+          className="btn-gradient h-14 w-14 rounded-full shadow-2xl hover:shadow-2xl hover:-translate-y-1 hover:scale-110 transition-all duration-300 border-0 text-white text-xl"
         >
           <div className="flex flex-col items-center">
             <span className="text-xl">⚡</span>
@@ -168,7 +169,7 @@ export function QuickCaptureEnhanced() {
 
   return (
     <BlurFade delay={0.1} className="fixed right-6 bottom-6 z-50 w-96">
-      <Card className="border-border/50 bg-card/95 border shadow-xl backdrop-blur-sm">
+      <Card className="glass-panel border-0 shadow-2xl">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center justify-between text-lg">
             <div className="flex items-center gap-2">
@@ -198,8 +199,18 @@ export function QuickCaptureEnhanced() {
           </p>
         </CardHeader>
 
-        <CardContent className="space-y-4">
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <CardContent className="space-y-4 relative">
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-5 rounded-b-2xl overflow-hidden">
+            <AnimatedGridPattern
+              numSquares={30}
+              maxOpacity={0.1}
+              duration={3}
+              className="text-primary"
+            />
+          </div>
+          
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 relative z-10">
             <Input
               {...form.register('titulo')}
               placeholder={MESSAGES.capture.placeholder_title}
