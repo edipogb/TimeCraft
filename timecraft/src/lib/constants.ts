@@ -2,101 +2,112 @@ export const APP_CONFIG = {
   name: 'TimeCraft',
   description: 'Personal Productivity Hub',
   version: '1.0.0',
-  author: 'TimeCraft Team'
+  author: 'TimeCraft Team',
 } as const
 
 export const PRIORIDADES = {
   baixa: { label: 'Baixa', color: 'gray', icon: '⚪' },
   media: { label: 'Média', color: 'blue', icon: '🔵' },
-  alta: { label: 'Alta', color: 'orange', icon: '🟠' }
+  alta: { label: 'Alta', color: 'orange', icon: '🟠' },
 } as const
 
 export const STATUS_TAREFA = {
   a_fazer: { label: 'A Fazer', color: 'gray', icon: '⭕' },
   fazendo: { label: 'Fazendo', color: 'blue', icon: '🔵' },
-  concluida: { label: 'Concluída', color: 'green', icon: '✅' }
+  concluida: { label: 'Concluída', color: 'green', icon: '✅' },
 } as const
 
 export const STATUS_META = {
   ativa: { label: 'Ativa', color: 'green' },
   pausada: { label: 'Pausada', color: 'yellow' },
   concluida: { label: 'Concluída', color: 'blue' },
-  cancelada: { label: 'Cancelada', color: 'red' }
+  cancelada: { label: 'Cancelada', color: 'red' },
 } as const
 
 export const CATEGORIAS_PARA = {
-  projetos: { 
-    label: 'Projetos', 
+  projetos: {
+    label: 'Projetos',
     description: 'Resultados específicos com múltiplas ações',
     icon: '🎯',
-    color: 'blue'
+    color: 'blue',
   },
-  areas: { 
-    label: 'Áreas', 
+  areas: {
+    label: 'Áreas',
     description: 'Responsabilidades contínuas a manter',
     icon: '🏗️',
-    color: 'green'
+    color: 'green',
   },
-  recursos: { 
-    label: 'Recursos', 
+  recursos: {
+    label: 'Recursos',
     description: 'Tópicos de interesse futuro',
     icon: '📚',
-    color: 'purple'
+    color: 'purple',
   },
-  arquivo: { 
-    label: 'Arquivo', 
+  arquivo: {
+    label: 'Arquivo',
     description: 'Itens inativos das categorias acima',
     icon: '📦',
-    color: 'gray'
-  }
+    color: 'gray',
+  },
 } as const
 
 export const QUICK_CAPTURE_SHORTCUTS = {
-  task: ['fazer', 'tarefa', 'todo', 'completar', 'terminar', 'comprar', 'ligar', 'enviar', 'pagar', 'agendar'],
+  task: [
+    'fazer',
+    'tarefa',
+    'todo',
+    'completar',
+    'terminar',
+    'comprar',
+    'ligar',
+    'enviar',
+    'pagar',
+    'agendar',
+  ],
   note: ['nota', 'lembrar', 'anotar', 'observação', 'informação', 'referência'],
-  goal: ['meta', 'objetivo', 'alcançar', 'conquistar', 'atingir', 'conseguir']
+  goal: ['meta', 'objetivo', 'alcançar', 'conquistar', 'atingir', 'conseguir'],
 } as const
 
 // AIDEV-NOTE: Templates de comando para Quick Capture GTD
 export const QUICK_CAPTURE_TEMPLATES = {
   '/tarefa': 'Fazer [sua tarefa]',
-  '/meta': 'Alcançar [seu objetivo]', 
+  '/meta': 'Alcançar [seu objetivo]',
   '/habito': '[atividade] diariamente',
   '/lembrete': 'Lembrar de [algo]',
   '/comprar': 'Comprar [item]',
   '/ligar': 'Ligar para [pessoa/empresa]',
-  '/email': 'Enviar email para [destinatário]'
+  '/email': 'Enviar email para [destinatário]',
 } as const
 
 // Níveis de energia GTD
 export const ENERGIA_GTD = {
-  baixa: { 
-    label: 'Baixa', 
+  baixa: {
+    label: 'Baixa',
     description: 'Tarefas rápidas e simples (5-15 min)',
     icon: '🟢',
-    examples: ['ligar', 'email', 'comprar', 'confirmar']
+    examples: ['ligar', 'email', 'comprar', 'confirmar'],
   },
-  media: { 
-    label: 'Média', 
+  media: {
+    label: 'Média',
     description: 'Tarefas que requerem foco moderado (30-60 min)',
     icon: '🟡',
-    examples: ['organizar', 'revisar', 'responder']
+    examples: ['organizar', 'revisar', 'responder'],
   },
-  alta: { 
-    label: 'Alta', 
+  alta: {
+    label: 'Alta',
     description: 'Trabalho criativo e estratégico (1-3 horas)',
     icon: '🔴',
-    examples: ['escrever', 'planejar', 'criar', 'analisar']
-  }
+    examples: ['escrever', 'planejar', 'criar', 'analisar'],
+  },
 } as const
 
 export const ROUTES = {
   dashboard: '/',
   inbox: '/inbox',
   tasks: '/tasks',
-  goals: '/goals', 
+  goals: '/goals',
   notes: '/notes',
   habits: '/habits',
   calendar: '/calendar',
-  settings: '/settings'
+  settings: '/settings',
 } as const

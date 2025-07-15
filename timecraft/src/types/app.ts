@@ -4,9 +4,19 @@ export type StatusTarefa = 'a_fazer' | 'fazendo' | 'concluida'
 export type FrequenciaHabito = 'diaria' | 'semanal'
 export type TipoMeta = 'resultado' | 'processo' | 'aprendizado'
 export type StatusMeta = 'ativa' | 'pausada' | 'concluida' | 'cancelada'
-export type TipoNota = 'rapida' | 'projeto' | 'referencia' | 'algum_dia' | 'processada'
+export type TipoNota =
+  | 'rapida'
+  | 'projeto'
+  | 'referencia'
+  | 'algum_dia'
+  | 'processada'
 export type CategoriaPara = 'projetos' | 'areas' | 'recursos' | 'arquivo'
-export type TipoEntidadeVinculada = 'tarefa' | 'habito' | 'meta' | 'nota' | 'evento'
+export type TipoEntidadeVinculada =
+  | 'tarefa'
+  | 'habito'
+  | 'meta'
+  | 'nota'
+  | 'evento'
 
 // Interfaces principais
 export interface Usuario {

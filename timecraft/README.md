@@ -225,16 +225,17 @@ erDiagram
 ## 🛠️ Tecnologias
 
 ### Frontend Core
-- **[React 18](https://reactjs.org/)** - UI library com Concurrent Features
-- **[TypeScript 5](https://typescriptlang.org/)** - Type safety e DX
-- **[Vite](https://vitejs.dev/)** - Build tool e dev server
-- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS
+- **[React 19.1.0](https://reactjs.org/)** - UI library com Concurrent Features
+- **[TypeScript 5.8.3](https://typescriptlang.org/)** - Type safety e DX
+- **[Vite 7.0.3](https://vitejs.dev/)** - Build tool e dev server
+- **[Tailwind CSS 4.0.0](https://tailwindcss.com/)** - Utility-first CSS com @theme directive
 
 ### UI/UX
-- **[Shadcn/ui](https://ui.shadcn.com/)** - Componentes acessíveis e customizáveis
+- **[Radix UI](https://radix-ui.com/)** - Componentes headless primitivos
 - **[Magic UI](https://magicui.design/)** - Componentes avançados com animações
-- **[Lucide React](https://lucide.dev/)** - Ícones SVG otimizados
+- **[Lucide React](https://lucide.dev/)** - Ícones SVG otimizados com sistema híbrido
 - **[Framer Motion](https://framer.com/motion/)** - Animações fluidas
+- **[Next Themes](https://github.com/pacocoursey/next-themes)** - Sistema de temas dark/light
 
 ### Estado e Dados
 - **[Zustand](https://zustand-demo.pmnd.rs/)** - State management leve
@@ -255,9 +256,11 @@ erDiagram
 - **[Workbox](https://developer.chrome.com/docs/workbox/)** - Caching strategies
 
 ### Desenvolvimento
-- **[ESLint](https://eslint.org/)** + **[Prettier](https://prettier.io/)** - Code quality
-- **[Vitest](https://vitest.dev/)** - Unit testing
-- **[Playwright](https://playwright.dev/)** - E2E testing (futuro)
+- **[ESLint 9.30.1](https://eslint.org/)** + **[Prettier 3.6.2](https://prettier.io/)** - Code quality e formatação
+- **[Vitest 3.2.4](https://vitest.dev/)** - Unit testing com jsdom
+- **[Testing Library](https://testing-library.com/)** - Testes focados no usuário
+- **[TypeScript ESLint](https://typescript-eslint.io/)** - Linting específico para TS
+- **[Prettier Plugin Tailwind](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)** - Ordenação de classes
 
 ---
 
@@ -408,16 +411,24 @@ Acesse: http://localhost:5173
 
 ```bash
 npm run dev          # Servidor de desenvolvimento (Vite)
-npm run build        # Build para produção
+npm run build        # Build para produção (TypeScript + Vite)
 npm run preview      # Preview do build local
+```
+
+### Pipeline de Qualidade ⭐
+
+```bash
+npm run qa           # Pipeline completo: type-check + lint + format + test
+npm run qa:fix       # Auto-correção: lint:fix + format + test
+npm run ci           # Pipeline CI/CD completo: qa + build
 ```
 
 ### Qualidade de Código
 
 ```bash
-npm run lint         # ESLint check
+npm run lint         # ESLint check (0 warnings máx)
 npm run lint:fix     # ESLint auto-fix
-npm run format       # Prettier format
+npm run format       # Prettier format (inclui plugin Tailwind)
 npm run format:check # Prettier check apenas
 npm run type-check   # TypeScript check sem emit
 ```
@@ -425,9 +436,9 @@ npm run type-check   # TypeScript check sem emit
 ### Testes
 
 ```bash
-npm run test         # Vitest unit tests
+npm run test         # Vitest unit tests (watch mode)
+npm run test:run     # Vitest single run (CI otimizado)
 npm run test:ui      # Vitest UI interface
-npm run test:watch   # Vitest watch mode
 npm run test:coverage # Coverage report
 ```
 
@@ -603,10 +614,84 @@ await registration.showNotification(title, options)
 
 ### Componentes Base
 
-- **Shadcn/ui** - Componentes acessíveis e customizáveis
+- **Radix UI** - Componentes headless primitivos (Dropdown, etc.)
 - **Magic UI** - Animações e micro-interações
-- **Design tokens** - Consistência visual
-- **Dark/Light mode** - Suporte completo
+- **Sistema de Ícones Híbrido** - Lucide React + Emoji fallback
+- **Design tokens** - Consistência visual com CSS custom properties
+- **Dark/Light mode** - Suporte completo com next-themes
+
+---
+
+## 🔧 Arquitetura de Qualidade
+
+### Pipeline Automatizada
+
+O TimeCraft implementa um pipeline robusto de qualidade de código:
+
+```mermaid
+graph LR
+    A[Desenvolvimento] --> B[QA Pipeline]
+    B --> C[Type Check]
+    B --> D[ESLint]
+    B --> E[Prettier]
+    B --> F[Tests]
+    F --> G[Build]
+    G --> H[Deploy]
+    
+    style B fill:#4caf50
+    style G fill:#2196f3
+```
+
+### Scripts de Qualidade
+
+```bash
+# Pipeline completo (recomendado para commits)
+npm run qa              # ~2min 15s
+  ├── npm run type-check   # TypeScript validation
+  ├── npm run lint         # ESLint (0 warnings)
+  ├── npm run format:check # Prettier verification  
+  └── npm run test:run     # Vitest single run
+
+# Auto-correção (desenvolvimento)
+npm run qa:fix          # ~2min 8s
+  ├── npm run lint:fix     # ESLint auto-fix
+  ├── npm run format       # Prettier auto-format
+  └── npm run test:run     # Test verification
+
+# Pipeline CI/CD completo
+npm run ci              # ~3min 20s
+  ├── npm run qa           # Full quality check
+  └── npm run build        # Production build
+```
+
+### Configurações de Qualidade
+
+#### ESLint (.eslintrc.js)
+- TypeScript-first configuration
+- React Hooks rules
+- 0 warnings policy
+- Import/export validation
+
+#### Prettier (.prettierrc)
+- Single quotes, no semicolons
+- Tailwind CSS class sorting
+- 2-space indentation
+- ES5 trailing commas
+
+#### Vitest (vitest.config.ts)
+- jsdom environment
+- Path mapping (@/)
+- Setup files with mocks
+- Coverage reporting
+
+### Métricas de Qualidade
+
+- ✅ **0 TypeScript errors**
+- ✅ **0 ESLint warnings/errors**
+- ✅ **100% Prettier conformity**
+- ✅ **0 security vulnerabilities**
+- ✅ **731 dependencies audited**
+- ✅ **4/4 tests passing**
 
 ---
 
@@ -723,11 +808,13 @@ test: adicionar testes para gtd helpers
 
 ### Code Review
 
-- ✅ Código segue padrões ESLint/Prettier
+- ✅ Pipeline QA executado com sucesso (`npm run qa`)
+- ✅ Código segue padrões ESLint/Prettier automatizados
 - ✅ Componentes são testáveis e acessíveis
 - ✅ TypeScript sem `any` types
 - ✅ Performance mantida (Lighthouse > 90)
 - ✅ PWA funcionalidades preservadas
+- ✅ Zero vulnerabilidades de segurança (`npm audit`)
 
 ### Configuração para Desenvolvimento
 

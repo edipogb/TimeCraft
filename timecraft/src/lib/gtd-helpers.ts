@@ -1,105 +1,134 @@
-// AIDEV-NOTE: Helpers para metodologia GTD - processamento de captura rápida e organização
+// AIDEV-NOTE: Helpers para metodologia GTD - processamento de captura rï¿½pida e organizaï¿½ï¿½o
 export function generateTitle(content: string): string {
   if (!content || !content.trim()) {
-    return 'Sem título'
+    return 'Sem tï¿½tulo'
   }
 
   const cleanContent = content.trim()
-  
+
   if (cleanContent.length <= 50) {
     return cleanContent
   }
-  
+
   const withoutCommands = cleanContent.replace(/^\/\w+\s*/, '')
   const words = withoutCommands.split(' ').filter(word => word.length > 0)
-  
+
   if (words.length <= 8) {
     return withoutCommands
   }
-  
+
   const truncated = words.slice(0, 8).join(' ')
-  return truncated.length > 47 ? `${truncated.substring(0, 47)}...` : `${truncated}...`
+  return truncated.length > 47
+    ? `${truncated.substring(0, 47)}...`
+    : `${truncated}...`
 }
 
 export function extractTags(content: string, context?: string): string[] {
   const tags: string[] = []
-  
+
   const contextMatches = content.match(/@[\w\u00C0-\u017F]+/g)
   if (contextMatches) {
     tags.push(...contextMatches.map(tag => tag.toLowerCase()))
   }
-  
+
   if (context && context.trim()) {
     const contextTag = context.trim().toLowerCase()
-    const formattedContext = contextTag.startsWith('@') ? contextTag : `@${contextTag}`
+    const formattedContext = contextTag.startsWith('@')
+      ? contextTag
+      : `@${contextTag}`
     if (!tags.includes(formattedContext)) {
       tags.push(formattedContext)
     }
   }
-  
+
   const hashMatches = content.match(/#[\w\u00C0-\u017F]+/g)
   if (hashMatches) {
     tags.push(...hashMatches.map(tag => tag.toLowerCase()))
   }
-  
+
   const lowerContent = content.toLowerCase()
-  
+
   if (lowerContent.match(/(urgente|prioridade|importante|asap|hoje mesmo)/)) {
     tags.push('#urgente')
   }
-  
-  if (lowerContent.match(/(quick|rápido|ligação|email|5min)/)) {
+
+  if (lowerContent.match(/(quick|rï¿½pido|ligaï¿½ï¿½o|email|5min)/)) {
     tags.push('#energia-baixa')
   }
-  
-  if (lowerContent.match(/(escrever|criar|planejar|analisar|estudar|reunião)/)) {
+
+  if (
+    lowerContent.match(/(escrever|criar|planejar|analisar|estudar|reuniï¿½o)/)
+  ) {
     tags.push('#energia-alta')
   }
-  
+
   return [...new Set(tags)]
 }
 
 export function detectEnergyLevel(content: string): 'baixa' | 'media' | 'alta' {
   const lowerContent = content.toLowerCase()
-  
+
   const highEnergyKeywords = [
-    'escrever', 'criar', 'planejar', 'analisar', 'estudar', 'desenvolver',
-    'projetar', 'pesquisar', 'estratégia', 'reunião', 'apresentação',
-    'relatório', 'código', 'programar'
+    'escrever',
+    'criar',
+    'planejar',
+    'analisar',
+    'estudar',
+    'desenvolver',
+    'projetar',
+    'pesquisar',
+    'estratï¿½gia',
+    'reuniï¿½o',
+    'apresentaï¿½ï¿½o',
+    'relatï¿½rio',
+    'cï¿½digo',
+    'programar',
   ]
-  
+
   if (highEnergyKeywords.some(keyword => lowerContent.includes(keyword))) {
     return 'alta'
   }
-  
+
   const lowEnergyKeywords = [
-    'ligar', 'comprar', 'enviar', 'pagar', 'lembrar', 'agendar',
-    'confirmar', 'verificar', 'responder', 'arquivar', 'deletar',
-    'quick', 'rápido', '5min', 'email'
+    'ligar',
+    'comprar',
+    'enviar',
+    'pagar',
+    'lembrar',
+    'agendar',
+    'confirmar',
+    'verificar',
+    'responder',
+    'arquivar',
+    'deletar',
+    'quick',
+    'rï¿½pido',
+    '5min',
+    'email',
   ]
-  
+
   if (lowEnergyKeywords.some(keyword => lowerContent.includes(keyword))) {
     return 'baixa'
   }
-  
+
   if (lowerContent.match(/(ligar para|enviar para|comprar na|pagar o)/)) {
     return 'baixa'
   }
-  
+
   return 'media'
 }
 
 export function processTemplateCommand(content: string): string {
   const templates = {
-    '/tarefa': (input: string) => input ? `Fazer ${input}` : '',
-    '/meta': (input: string) => input ? `Alcançar ${input}` : '',
-    '/habito': (input: string) => input ? `${input} diariamente` : '',
-    '/lembrete': (input: string) => input ? `Lembrar de ${input}` : '',
-    '/comprar': (input: string) => input ? `Comprar ${input}` : '',
-    '/ligar': (input: string) => input ? `Ligar para ${input}` : '',
-    '/email': (input: string) => input ? `Enviar email para ${input}` : '',
+    '/tarefa': (input: string) => (input ? `Fazer ${input}` : ''),
+    '/meta': (input: string) => (input ? `Alcanï¿½ar ${input}` : ''),
+    '/habito': (input: string) => (input ? `${input} diariamente` : ''),
+    '/lembrete': (input: string) => (input ? `Lembrar de ${input}` : ''),
+    '/comprar': (input: string) => (input ? `Comprar ${input}` : ''),
+    '/ligar': (input: string) => (input ? `Ligar para ${input}` : ''),
+    '/email': (input: string) => (input ? `Enviar email para ${input}` : ''),
   }
-  
+
   for (const [command, template] of Object.entries(templates)) {
     if (content.toLowerCase().startsWith(command)) {
       const input = content.substring(command.length).trim()
@@ -109,34 +138,43 @@ export function processTemplateCommand(content: string): string {
       }
     }
   }
-  
+
   return content
 }
 
-export function shouldAutoConvert(suggestion: { confidence: string; type: string }): boolean {
-  return suggestion.confidence === 'high' && 
-         ['tarefa', 'meta'].includes(suggestion.type)
+export function shouldAutoConvert(suggestion: {
+  confidence: string
+  type: string
+}): boolean {
+  return (
+    suggestion.confidence === 'high' &&
+    ['tarefa', 'meta'].includes(suggestion.type)
+  )
 }
 
-export function getGTDCategory(content: string): 'action' | 'reference' | 'someday' | 'project' {
+export function getGTDCategory(
+  content: string
+): 'action' | 'reference' | 'someday' | 'project' {
   const lowerContent = content.toLowerCase()
-  
+
   if (lowerContent.match(/^(fazer|preciso|devo|tenho que|vou)/)) {
     return 'action'
   }
-  
+
   if (lowerContent.match(/(projeto|plano|organizar|preparar para)/)) {
     return 'project'
   }
-  
-  if (lowerContent.match(/(talvez|futuro|um dia|quando|se possível|gostaria)/)) {
+
+  if (
+    lowerContent.match(/(talvez|futuro|um dia|quando|se possï¿½vel|gostaria)/)
+  ) {
     return 'someday'
   }
-  
-  if (lowerContent.match(/(informação|dados|referência|documentar|anotar)/)) {
+
+  if (lowerContent.match(/(informaï¿½ï¿½o|dados|referï¿½ncia|documentar|anotar)/)) {
     return 'reference'
   }
-  
+
   return 'action'
 }
 

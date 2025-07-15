@@ -20,10 +20,19 @@ interface NoteConverterProps {
   preselectedType?: 'tarefa' | 'meta'
 }
 
-export function NoteConverter({ note, onConverted, onCancel, preselectedType = 'tarefa' }: NoteConverterProps) {
+export function NoteConverter({
+  note,
+  onConverted,
+  onCancel,
+  preselectedType = 'tarefa',
+}: NoteConverterProps) {
   const [converting, setConverting] = useState(false)
-  const [targetType, setTargetType] = useState<'tarefa' | 'meta'>(preselectedType)
-  const [titulo, setTitulo] = useState(note.titulo || note.conteudo.substring(0, 50))
+  const [targetType, setTargetType] = useState<'tarefa' | 'meta'>(
+    preselectedType
+  )
+  const [titulo, setTitulo] = useState(
+    note.titulo || note.conteudo.substring(0, 50)
+  )
   const [descricao, setDescricao] = useState(note.conteudo)
   const [prioridade, setPrioridade] = useState<PrioridadeTarefa>('media')
   const [tipoMeta, setTipoMeta] = useState<TipoMeta>('resultado')
@@ -35,7 +44,12 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
   const handleConvert = async () => {
     try {
       setConverting(true)
-      console.log('Iniciando conversão:', { noteId: note.id, targetType, titulo, descricao })
+      console.log('Iniciando conversão:', {
+        noteId: note.id,
+        targetType,
+        titulo,
+        descricao,
+      })
 
       if (targetType === 'tarefa') {
         console.log('Criando tarefa da nota...')
@@ -45,7 +59,7 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
           prioridade,
         })
         console.log('Tarefa criada, nota deve estar marcada como processada')
-        
+
         toast.success('Nota convertida em tarefa com sucesso!')
       } else if (targetType === 'meta') {
         console.log('Criando meta da nota...')
@@ -55,7 +69,7 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
           tipo: tipoMeta,
         })
         console.log('Meta criada, nota deve estar marcada como processada')
-        
+
         toast.success('Nota convertida em meta com sucesso!')
       }
 
@@ -66,29 +80,31 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
         .select('tipo')
         .eq('id', note.id)
         .single()
-      
+
       console.log('Tipo da nota após conversão:', updatedNote?.tipo)
-      
+
       // Se a nota ainda não foi marcada como processada, forçar atualização
       if (updatedNote?.tipo !== 'referencia') {
-        console.log('Nota não foi marcada como processada, forçando atualização...')
+        console.log(
+          'Nota não foi marcada como processada, forçando atualização...'
+        )
         await updateNote(note.id, { tipo: 'referencia' })
         console.log('Atualização forçada concluída')
       }
-      
+
       onConverted()
-      
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
       console.error('Erro ao converter nota:', error)
       console.error('Detalhes do erro:', {
         message: errorMessage,
         noteId: note.id,
         targetType,
         titulo,
-        descricao
+        descricao,
       })
-      
+
       // Mensagens de erro mais específicas
       if (errorMessage.includes('não autenticado')) {
         toast.error('Você precisa estar logado para converter notas')
@@ -110,9 +126,9 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2 }}
-      className="w-full max-w-3xl mx-auto"
+      className="mx-auto w-full max-w-3xl"
     >
-      <Card className="bg-card/90 backdrop-blur-xl shadow-2xl border border-border overflow-hidden">
+      <Card className="bg-card/90 border-border overflow-hidden border shadow-2xl backdrop-blur-xl">
         {/* Header com gradiente */}
         <CardHeader className="bg-primary text-primary-foreground">
           <motion.div
@@ -120,10 +136,10 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
           >
-            <CardTitle className="text-2xl font-bold flex items-center gap-3">
+            <CardTitle className="flex items-center gap-3 text-2xl font-bold">
               <motion.span
                 animate={{ rotate: [0, 360] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                 className="text-3xl"
               >
                 🔄
@@ -136,14 +152,14 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
           </motion.div>
         </CardHeader>
 
-        <CardContent className="p-8 space-y-6">
+        <CardContent className="space-y-6 p-8">
           {/* Tipo de conversão */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <label className="text-sm font-semibold text-foreground mb-3 block">
+            <label className="text-foreground mb-3 block text-sm font-semibold">
               Converter para:
             </label>
             <div className="grid grid-cols-2 gap-4">
@@ -152,17 +168,21 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setTargetType('tarefa')}
                 className={cn(
-                  "p-4 rounded-xl border-2 transition-all duration-200 text-left",
-                  targetType === 'tarefa' 
-                    ? "border-primary bg-primary/10 shadow-lg" 
-                    : "border-border bg-card hover:border-primary/50 hover:bg-primary/5"
+                  'rounded-xl border-2 p-4 text-left transition-all duration-200',
+                  targetType === 'tarefa'
+                    ? 'border-primary bg-primary/10 shadow-lg'
+                    : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5'
                 )}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">✅</span>
                   <div>
-                    <div className="font-semibold text-card-foreground">Tarefa</div>
-                    <div className="text-sm text-muted-foreground">Ação específica para completar</div>
+                    <div className="text-card-foreground font-semibold">
+                      Tarefa
+                    </div>
+                    <div className="text-muted-foreground text-sm">
+                      Ação específica para completar
+                    </div>
                   </div>
                 </div>
               </motion.button>
@@ -172,17 +192,21 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setTargetType('meta')}
                 className={cn(
-                  "p-4 rounded-xl border-2 transition-all duration-200 text-left",
-                  targetType === 'meta' 
-                    ? "border-primary bg-primary/10 shadow-lg" 
-                    : "border-border bg-card hover:border-primary/50 hover:bg-primary/5"
+                  'rounded-xl border-2 p-4 text-left transition-all duration-200',
+                  targetType === 'meta'
+                    ? 'border-primary bg-primary/10 shadow-lg'
+                    : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5'
                 )}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">🎯</span>
                   <div>
-                    <div className="font-semibold text-card-foreground">Meta</div>
-                    <div className="text-sm text-muted-foreground">Resultado que você quer alcançar</div>
+                    <div className="text-card-foreground font-semibold">
+                      Meta
+                    </div>
+                    <div className="text-muted-foreground text-sm">
+                      Resultado que você quer alcançar
+                    </div>
                   </div>
                 </div>
               </motion.button>
@@ -190,22 +214,22 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
           </motion.div>
 
           {/* Campos de entrada */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
               className="space-y-2"
             >
-              <label className="text-sm font-semibold text-foreground block">
+              <label className="text-foreground block text-sm font-semibold">
                 Título:
               </label>
               <Input
                 value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                onChange={e => setTitulo(e.target.value)}
                 placeholder="Título da tarefa/meta"
                 disabled={converting}
-                className="bg-card/70 backdrop-blur-sm border-border focus:border-primary focus:bg-card transition-all duration-200"
+                className="bg-card/70 border-border focus:border-primary focus:bg-card backdrop-blur-sm transition-all duration-200"
               />
             </motion.div>
 
@@ -216,12 +240,14 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
                 transition={{ delay: 0.4 }}
                 className="space-y-2"
               >
-                <label className="text-sm font-semibold text-foreground block">
+                <label className="text-foreground block text-sm font-semibold">
                   Prioridade:
                 </label>
-                <Select 
-                  value={prioridade} 
-                  onChange={(e) => setPrioridade(e.target.value as PrioridadeTarefa)}
+                <Select
+                  value={prioridade}
+                  onChange={e =>
+                    setPrioridade(e.target.value as PrioridadeTarefa)
+                  }
                   className="bg-card/70 backdrop-blur-sm"
                 >
                   <SelectItem value="baixa">🟢 Baixa</SelectItem>
@@ -238,12 +264,12 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
                 transition={{ delay: 0.4 }}
                 className="space-y-2"
               >
-                <label className="text-sm font-semibold text-foreground block">
+                <label className="text-foreground block text-sm font-semibold">
                   Tipo da Meta:
                 </label>
-                <Select 
-                  value={tipoMeta} 
-                  onChange={(e) => setTipoMeta(e.target.value as TipoMeta)}
+                <Select
+                  value={tipoMeta}
+                  onChange={e => setTipoMeta(e.target.value as TipoMeta)}
                   className="bg-card/70 backdrop-blur-sm"
                 >
                   <SelectItem value="resultado">🎯 Resultado</SelectItem>
@@ -260,16 +286,16 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
             transition={{ delay: 0.5 }}
             className="space-y-2"
           >
-            <label className="text-sm font-semibold text-foreground block">
+            <label className="text-foreground block text-sm font-semibold">
               Descrição:
             </label>
             <Textarea
               value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
+              onChange={e => setDescricao(e.target.value)}
               rows={4}
               placeholder="Descrição detalhada"
               disabled={converting}
-              className="bg-card/70 backdrop-blur-sm border-border focus:border-primary focus:bg-card transition-all duration-200 resize-none"
+              className="bg-card/70 border-border focus:border-primary focus:bg-card resize-none backdrop-blur-sm transition-all duration-200"
             />
           </motion.div>
 
@@ -278,20 +304,29 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-muted/30 p-6 rounded-xl border border-border"
+            className="bg-muted/30 border-border rounded-xl border p-6"
           >
             <div className="flex items-start gap-4">
-              <div className="w-1 h-16 bg-primary rounded-full"></div>
+              <div className="bg-primary h-16 w-1 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-foreground mb-2">
+                <p className="text-foreground mb-2 text-sm font-medium">
                   📝 Nota original:
                 </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  "{note.conteudo.substring(0, 150)}{note.conteudo.length > 150 ? '...' : ''}"
+                <p className="text-muted-foreground mb-3 text-sm leading-relaxed">
+                  "{note.conteudo.substring(0, 150)}
+                  {note.conteudo.length > 150 ? '...' : ''}"
                 </p>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground/70">
-                  <span>📅 {new Date(note.criado_em).toLocaleDateString('pt-BR')}</span>
-                  <span>🕒 {new Date(note.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                <div className="text-muted-foreground/70 flex items-center gap-4 text-xs">
+                  <span>
+                    📅 {new Date(note.criado_em).toLocaleDateString('pt-BR')}
+                  </span>
+                  <span>
+                    🕒{' '}
+                    {new Date(note.criado_em).toLocaleTimeString('pt-BR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
                   {note.tags.length > 0 && (
                     <span>🏷️ {note.tags.join(', ')}</span>
                   )}
@@ -312,42 +347,41 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
               whileTap={{ scale: 0.98 }}
               className="flex-1"
             >
-              <Button 
-                onClick={handleConvert} 
-                disabled={converting} 
+              <Button
+                onClick={handleConvert}
+                disabled={converting}
                 className={cn(
-                  "w-full py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group",
-                  "bg-primary hover:bg-primary/90 text-primary-foreground"
+                  'group relative w-full overflow-hidden py-4 text-lg font-semibold shadow-lg transition-all duration-200 hover:shadow-xl',
+                  'bg-primary hover:bg-primary/90 text-primary-foreground'
                 )}
               >
                 {converting && (
-                  <div className="absolute inset-0 bg-primary-foreground/10 flex items-center justify-center">
-                    <div className="w-6 h-6 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                  <div className="bg-primary-foreground/10 absolute inset-0 flex items-center justify-center">
+                    <div className="border-primary-foreground h-6 w-6 animate-spin rounded-full border-2 border-t-transparent"></div>
                   </div>
                 )}
-                
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/25 to-primary-foreground/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                
+
+                <div className="from-primary-foreground/0 via-primary-foreground/25 to-primary-foreground/0 absolute inset-0 -translate-x-full -skew-x-12 bg-gradient-to-r transition-transform duration-700 group-hover:translate-x-full" />
+
                 <span className="relative flex items-center justify-center gap-3">
                   {!converting && (
                     <span className="text-2xl">
                       {targetType === 'tarefa' ? '✅' : '🎯'}
                     </span>
                   )}
-                  {converting ? 'Convertendo...' : `Criar ${targetType === 'tarefa' ? 'Tarefa' : 'Meta'}`}
+                  {converting
+                    ? 'Convertendo...'
+                    : `Criar ${targetType === 'tarefa' ? 'Tarefa' : 'Meta'}`}
                 </span>
               </Button>
             </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Button 
-                variant="outline" 
-                onClick={onCancel} 
+
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button
+                variant="outline"
+                onClick={onCancel}
                 disabled={converting}
-                className="px-8 py-4 text-lg bg-card/70 backdrop-blur-sm border-border hover:bg-card transition-all duration-200"
+                className="bg-card/70 border-border hover:bg-card px-8 py-4 text-lg backdrop-blur-sm transition-all duration-200"
               >
                 Cancelar
               </Button>
@@ -359,19 +393,18 @@ export function NoteConverter({ note, onConverted, onCancel, preselectedType = '
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="bg-primary/5 p-4 rounded-xl border border-primary/20"
+            className="bg-primary/5 border-primary/20 rounded-xl border p-4"
           >
             <div className="flex items-start gap-3">
               <span className="text-xl">💡</span>
               <div>
-                <div className="text-sm font-medium text-primary mb-1">
+                <div className="text-primary mb-1 text-sm font-medium">
                   Metodologia GTD
                 </div>
-                <div className="text-xs text-primary/80 leading-relaxed">
-                  {targetType === 'tarefa' 
-                    ? "Uma tarefa é uma ação específica que você pode completar. Seja claro sobre o que precisa ser feito."
-                    : "Uma meta é um resultado que você quer alcançar. Defina claramente o que constitui o sucesso."
-                  }
+                <div className="text-primary/80 text-xs leading-relaxed">
+                  {targetType === 'tarefa'
+                    ? 'Uma tarefa é uma ação específica que você pode completar. Seja claro sobre o que precisa ser feito.'
+                    : 'Uma meta é um resultado que você quer alcançar. Defina claramente o que constitui o sucesso.'}
                 </div>
               </div>
             </div>

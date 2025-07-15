@@ -9,7 +9,8 @@ export function useToastMessages() {
       signupSuccess: () => toast.success(MESSAGES.auth.signup_success),
       loginSuccess: () => toast.success(MESSAGES.auth.login_success),
       logoutSuccess: () => toast.success(MESSAGES.auth.logout_success),
-      error: (message?: string) => toast.error(message || MESSAGES.auth.error_generic),
+      error: (message?: string) =>
+        toast.error(message || MESSAGES.auth.error_generic),
     },
 
     // Métodos para notes
@@ -50,8 +51,10 @@ export function useToastMessages() {
       updateSuccess: () => toast.success(MESSAGES.habits.update_success),
       completeSuccess: () => toast.success(MESSAGES.habits.complete_success),
       deleteSuccess: () => toast.success(MESSAGES.habits.delete_success),
-      streakMilestone: (days: number) => 
-        toast.success(MESSAGES.habits.streak_milestone.replace('{{days}}', days.toString())),
+      streakMilestone: (days: number) =>
+        toast.success(
+          MESSAGES.habits.streak_milestone.replace('{{days}}', days.toString())
+        ),
       streakBroken: () => toast.warning(MESSAGES.habits.streak_broken),
       createError: () => toast.error(MESSAGES.habits.error_create),
       updateError: () => toast.error(MESSAGES.habits.error_update),
@@ -60,7 +63,8 @@ export function useToastMessages() {
 
     // Métodos para sistema
     system: {
-      connectionSuccess: () => toast.success(MESSAGES.system.connection_success),
+      connectionSuccess: () =>
+        toast.success(MESSAGES.system.connection_success),
       connectionError: () => toast.error(MESSAGES.system.connection_error),
       genericError: () => toast.error(MESSAGES.system.error_generic),
       networkError: () => toast.error(MESSAGES.system.error_network),

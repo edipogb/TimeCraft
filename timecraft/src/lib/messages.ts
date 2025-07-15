@@ -12,7 +12,7 @@ export const MESSAGES = {
     error_invalid_email: 'Email inválido.',
     required_email: 'Email é obrigatório',
     required_password: 'Senha é obrigatória',
-    required_name: 'Nome é obrigatório'
+    required_name: 'Nome é obrigatório',
   },
 
   // Quick Capture
@@ -24,7 +24,7 @@ export const MESSAGES = {
     button_capture: 'Capturar',
     button_cancel: 'Cancelar',
     placeholder_title: 'Título (opcional)',
-    placeholder_content: 'Digite qualquer coisa... (tarefa, nota, ideia, meta)'
+    placeholder_content: 'Digite qualquer coisa... (tarefa, nota, ideia, meta)',
   },
 
   // Notas
@@ -34,7 +34,7 @@ export const MESSAGES = {
     delete_success: 'Nota excluída com sucesso!',
     error_create: 'Erro ao criar nota',
     error_update: 'Erro ao atualizar nota',
-    error_delete: 'Erro ao excluir nota'
+    error_delete: 'Erro ao excluir nota',
   },
 
   // Tarefas
@@ -45,7 +45,7 @@ export const MESSAGES = {
     delete_success: 'Tarefa excluída com sucesso!',
     error_create: 'Erro ao criar tarefa',
     error_update: 'Erro ao atualizar tarefa',
-    error_delete: 'Erro ao excluir tarefa'
+    error_delete: 'Erro ao excluir tarefa',
   },
 
   // Metas
@@ -56,7 +56,7 @@ export const MESSAGES = {
     delete_success: 'Meta excluída com sucesso!',
     error_create: 'Erro ao criar meta',
     error_update: 'Erro ao atualizar meta',
-    error_delete: 'Erro ao excluir meta'
+    error_delete: 'Erro ao excluir meta',
   },
 
   // Hábitos
@@ -69,7 +69,7 @@ export const MESSAGES = {
     delete_success: 'Hábito excluído com sucesso!',
     error_create: 'Erro ao criar hábito',
     error_update: 'Erro ao atualizar hábito',
-    error_delete: 'Erro ao excluir hábito'
+    error_delete: 'Erro ao excluir hábito',
   },
 
   // Sistema/Conexão
@@ -81,7 +81,7 @@ export const MESSAGES = {
     processing: 'Processando...',
     error_generic: 'Ocorreu um erro inesperado. Tente novamente.',
     error_network: 'Erro de rede. Verifique sua conexão.',
-    error_server: 'Erro no servidor. Tente novamente em alguns instantes.'
+    error_server: 'Erro no servidor. Tente novamente em alguns instantes.',
   },
 
   // Validação de formulários
@@ -89,15 +89,15 @@ export const MESSAGES = {
     required_field: 'Este campo é obrigatório',
     invalid_email: 'Email inválido',
     password_min_length: 'Senha deve ter pelo menos 6 caracteres',
-    passwords_must_match: 'As senhas devem ser iguais'
+    passwords_must_match: 'As senhas devem ser iguais',
   },
 
   // Confirmações
   confirm: {
     delete_item: 'Tem certeza que deseja excluir este item?',
     unsaved_changes: 'Você tem alterações não salvas. Deseja continuar?',
-    reset_data: 'Isso irá redefinir todos os dados. Continuar?'
-  }
+    reset_data: 'Isso irá redefinir todos os dados. Continuar?',
+  },
 } as const
 
 // Tipo helper para autocompletar

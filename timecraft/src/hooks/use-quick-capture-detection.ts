@@ -15,81 +15,97 @@ export function useQuickCaptureDetection() {
     }
 
     const lowerContent = content.toLowerCase()
-    
+
     // ALTA CONFIANÇA - padrões claros e específicos
-    
+
     // Comandos de template
     if (lowerContent.startsWith('/tarefa')) {
       return {
         confidence: 'high',
         type: 'tarefa',
-        reason: 'Comando template /tarefa usado'
+        reason: 'Comando template /tarefa usado',
       }
     }
-    
+
     if (lowerContent.startsWith('/meta')) {
       return {
         confidence: 'high',
         type: 'meta',
-        reason: 'Comando template /meta usado'
+        reason: 'Comando template /meta usado',
       }
     }
-    
+
     if (lowerContent.startsWith('/habito')) {
       return {
         confidence: 'high',
         type: 'habito',
-        reason: 'Comando template /habito usado'
+        reason: 'Comando template /habito usado',
       }
     }
-    
+
     // Padrões de tarefas
-    if (lowerContent.match(/^(fazer|preciso|devo|tenho que|comprar|ligar|enviar|pagar)\s/)) {
+    if (
+      lowerContent.match(
+        /^(fazer|preciso|devo|tenho que|comprar|ligar|enviar|pagar)\s/
+      )
+    ) {
       return {
         confidence: 'high',
         type: 'tarefa',
-        reason: 'Começa com verbo de ação típico de tarefa'
+        reason: 'Começa com verbo de ação típico de tarefa',
       }
     }
-    
+
     // Padrões de metas
-    if (lowerContent.match(/(meta:|objetivo:|alcançar|conseguir|atingir|objetivo de)/)) {
+    if (
+      lowerContent.match(
+        /(meta:|objetivo:|alcançar|conseguir|atingir|objetivo de)/
+      )
+    ) {
       return {
         confidence: 'high',
         type: 'meta',
-        reason: 'Contém indicadores explícitos de meta/objetivo'
+        reason: 'Contém indicadores explícitos de meta/objetivo',
       }
     }
-    
+
     // Padrões de hábitos
-    if (lowerContent.match(/(diariamente|todo dia|todos os dias|sempre|hábito|rotina|toda manhã|toda noite)/)) {
+    if (
+      lowerContent.match(
+        /(diariamente|todo dia|todos os dias|sempre|hábito|rotina|toda manhã|toda noite)/
+      )
+    ) {
       return {
         confidence: 'high',
         type: 'habito',
-        reason: 'Indica frequência regular ou rotina'
+        reason: 'Indica frequência regular ou rotina',
       }
     }
 
     // MÉDIA CONFIANÇA - múltiplas palavras-chave
     const taskKeywords = QUICK_CAPTURE_SHORTCUTS.task
     const goalKeywords = QUICK_CAPTURE_SHORTCUTS.goal
-    
-    const taskMatches = taskKeywords.filter(keyword => lowerContent.includes(keyword))
-    const goalMatches = goalKeywords.filter(keyword => lowerContent.includes(keyword))
-    
+
+    const taskMatches = taskKeywords.filter(keyword =>
+      lowerContent.includes(keyword)
+    )
+    const goalMatches = goalKeywords.filter(keyword =>
+      lowerContent.includes(keyword)
+    )
+
     if (taskMatches.length >= 2) {
       return {
         confidence: 'medium',
         type: 'tarefa',
-        reason: `Múltiplas palavras de tarefa: ${taskMatches.slice(0, 2).join(', ')}`
+        reason: `Múltiplas palavras de tarefa: ${taskMatches.slice(0, 2).join(', ')}`,
       }
     }
-    
+
     if (goalMatches.length >= 1) {
       return {
         confidence: 'medium',
         type: 'meta',
-        reason: `Palavras relacionadas a meta: ${goalMatches[0]}`
+        reason: `Palavras relacionadas a meta: ${goalMatches[0]}`,
       }
     }
 
@@ -98,16 +114,20 @@ export function useQuickCaptureDetection() {
       return {
         confidence: 'low',
         type: 'tarefa',
-        reason: `Possível tarefa (palavra-chave: ${taskMatches[0]})`
+        reason: `Possível tarefa (palavra-chave: ${taskMatches[0]})`,
       }
     }
-    
+
     // Padrões de números/quantidades podem indicar metas
-    if (lowerContent.match(/\d+\s*(kg|quilos|km|livros|páginas|horas|dias|semanas|meses|anos)/)) {
+    if (
+      lowerContent.match(
+        /\d+\s*(kg|quilos|km|livros|páginas|horas|dias|semanas|meses|anos)/
+      )
+    ) {
       return {
         confidence: 'low',
         type: 'meta',
-        reason: 'Contém quantidade mensurável'
+        reason: 'Contém quantidade mensurável',
       }
     }
 
@@ -115,7 +135,7 @@ export function useQuickCaptureDetection() {
     return {
       confidence: 'low',
       type: 'nota',
-      reason: 'Será processado durante review'
+      reason: 'Será processado durante review',
     }
   }
 
@@ -132,7 +152,7 @@ export function useQuickCaptureDetection() {
         '/tarefa': 'Fazer [sua tarefa]',
         '/meta': 'Alcançar [seu objetivo]',
         '/habito': '[atividade] diariamente',
-        '/lembrete': 'Lembrar de [algo]'
+        '/lembrete': 'Lembrar de [algo]',
       }
       return templates[command as keyof typeof templates] || null
     }

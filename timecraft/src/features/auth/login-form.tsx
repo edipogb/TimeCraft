@@ -5,7 +5,13 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { useAuthStore } from '@/stores/auth-store'
 import { MESSAGES } from '@/lib/messages'
 import { BlurFade } from '@/components/magicui/blur-fade'
@@ -35,7 +41,7 @@ export function LoginForm() {
   const onSubmit = async (data: AuthFormData) => {
     try {
       setLoading(true)
-      
+
       if (isSignUp) {
         await signUp(data.email, data.password, data.fullName)
         toast.success(MESSAGES.auth.signup_success)
@@ -44,9 +50,10 @@ export function LoginForm() {
         toast.success(MESSAGES.auth.login_success)
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error'
       console.error('Auth error:', errorMessage)
-      
+
       // Traduzir mensagens de erro comuns
       let translatedErrorMessage = MESSAGES.auth.error_generic
       if (errorMessage.includes('Invalid login credentials')) {
@@ -56,7 +63,7 @@ export function LoginForm() {
       } else if (errorMessage.includes('Password should be at least')) {
         translatedErrorMessage = MESSAGES.auth.error_weak_password
       }
-      
+
       toast.error(translatedErrorMessage)
     } finally {
       setLoading(false)
@@ -64,12 +71,12 @@ export function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <BlurFade delay={0.1} className="w-full max-w-md">
         <Card className="border-border/50 shadow-lg">
-          <CardHeader className="text-center space-y-2">
+          <CardHeader className="space-y-2 text-center">
             <BlurFade delay={0.2}>
-              <div className="mx-auto w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+              <div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
                 <span className="text-2xl">⚡</span>
               </div>
             </BlurFade>
@@ -86,7 +93,10 @@ export function LoginForm() {
           </CardHeader>
           <CardContent>
             <BlurFade delay={0.5}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 {isSignUp && (
                   <div className="space-y-2">
                     <Input
@@ -97,7 +107,7 @@ export function LoginForm() {
                     />
                   </div>
                 )}
-                
+
                 <div className="space-y-2">
                   <Input
                     {...form.register('email')}
@@ -107,7 +117,7 @@ export function LoginForm() {
                     className="h-11"
                   />
                   {form.formState.errors.email && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-destructive text-sm">
                       {form.formState.errors.email.message}
                     </p>
                   )}
@@ -122,35 +132,39 @@ export function LoginForm() {
                     className="h-11"
                   />
                   {form.formState.errors.password && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-destructive text-sm">
                       {form.formState.errors.password.message}
                     </p>
                   )}
                 </div>
 
-                <Button 
-                  type="submit" 
-                  className="w-full h-11 font-medium" 
+                <Button
+                  type="submit"
+                  className="h-11 w-full font-medium"
                   disabled={loading}
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                       {isSignUp ? 'Criando conta...' : 'Entrando...'}
                     </div>
+                  ) : isSignUp ? (
+                    'Criar Conta'
                   ) : (
-                    isSignUp ? 'Criar Conta' : 'Entrar'
+                    'Entrar'
                   )}
                 </Button>
 
-                <div className="text-center pt-2">
+                <div className="pt-2 text-center">
                   <button
                     type="button"
                     onClick={() => setIsSignUp(!isSignUp)}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-muted-foreground hover:text-primary text-sm transition-colors"
                     disabled={loading}
                   >
-                    {isSignUp ? 'Já tem conta? Fazer login' : 'Não tem conta? Criar nova'}
+                    {isSignUp
+                      ? 'Já tem conta? Fazer login'
+                      : 'Não tem conta? Criar nova'}
                   </button>
                 </div>
               </form>

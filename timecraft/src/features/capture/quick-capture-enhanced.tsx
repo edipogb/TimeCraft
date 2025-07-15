@@ -11,7 +11,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useNotesStore } from '@/stores/notes-store'
 import { useAuthStore } from '@/stores/auth-store'
 import { useQuickCaptureDetection } from '@/hooks/use-quick-capture-detection'
-import { generateTitle, extractTags, generateMetadata, processTemplateCommand } from '@/lib/gtd-helpers'
+import {
+  generateTitle,
+  extractTags,
+  generateMetadata,
+  processTemplateCommand,
+} from '@/lib/gtd-helpers'
 import { MESSAGES } from '@/lib/messages'
 import { BlurFade } from '@/components/magicui/blur-fade'
 
@@ -56,16 +61,16 @@ export function QuickCaptureEnhanced() {
   const onSubmit = async (data: QuickCaptureData) => {
     try {
       setLoading(true)
-      
+
       // Verificar se usuário está autenticado
       if (!user) {
         toast.error('Você precisa estar logado para capturar notas')
         return
       }
-      
+
       // Processar template commands
       const processedContent = processTemplateCommand(data.conteudo)
-      
+
       // GTD: Tudo vai para inbox primeiro (tipo: 'rapida')
       const noteData = {
         titulo: data.titulo || generateTitle(processedContent),
@@ -79,29 +84,32 @@ export function QuickCaptureEnhanced() {
 
       // Metadata adicional para processamento GTD
       generateMetadata(processedContent, data.contexto)
-      
+
       form.reset()
       setIsExpanded(false)
-      
+
       // Toast baseado na confiança da sugestão
       if (suggestion.confidence === 'high') {
         toast.success(`Capturado! Sugerido como ${suggestion.type}`, {
-          description: 'Disponível para conversão durante o review'
+          description: 'Disponível para conversão durante o review',
         })
       } else {
         toast.success(MESSAGES.capture.success, {
-          description: 'Adicionado ao seu inbox GTD'
+          description: 'Adicionado ao seu inbox GTD',
         })
       }
-      
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error'
       console.error('Erro ao capturar:', errorMessage)
-      
+
       // Traduzir mensagens de erro específicas
       if (errorMessage.includes('Usuário não autenticado')) {
         toast.error('Você precisa estar logado para capturar notas')
-      } else if (errorMessage.includes('auth') || errorMessage.includes('403')) {
+      } else if (
+        errorMessage.includes('auth') ||
+        errorMessage.includes('403')
+      ) {
         toast.error('Erro de autenticação. Tente fazer login novamente')
       } else if (errorMessage.includes('JWT')) {
         toast.error('Sessão expirada. Faça login novamente')
@@ -116,30 +124,39 @@ export function QuickCaptureEnhanced() {
 
   const getBadgeVariant = (confidence: string) => {
     switch (confidence) {
-      case 'high': return 'default'
-      case 'medium': return 'secondary'
-      case 'low': return 'outline'
-      default: return 'outline'
+      case 'high':
+        return 'default'
+      case 'medium':
+        return 'secondary'
+      case 'low':
+        return 'outline'
+      default:
+        return 'outline'
     }
   }
 
   const getBadgeIcon = (type: string) => {
     switch (type) {
-      case 'tarefa': return '✅'
-      case 'meta': return '🎯'
-      case 'habito': return '🔄'
-      case 'nota': return '📝'
-      default: return '📝'
+      case 'tarefa':
+        return '✅'
+      case 'meta':
+        return '🎯'
+      case 'habito':
+        return '🔄'
+      case 'nota':
+        return '📝'
+      default:
+        return '📝'
     }
   }
 
   if (!isExpanded) {
     return (
-      <BlurFade delay={0.1} className="fixed bottom-6 right-6 z-50">
+      <BlurFade delay={0.1} className="fixed right-6 bottom-6 z-50">
         <Button
           onClick={() => setIsExpanded(true)}
           size="lg"
-          className="rounded-full h-14 w-14 shadow-lg hover:shadow-xl transition-all duration-200 bg-primary hover:bg-primary/90"
+          className="bg-primary hover:bg-primary/90 h-14 w-14 rounded-full shadow-lg transition-all duration-200 hover:shadow-xl"
         >
           <div className="flex flex-col items-center">
             <span className="text-xl">⚡</span>
@@ -150,15 +167,18 @@ export function QuickCaptureEnhanced() {
   }
 
   return (
-    <BlurFade delay={0.1} className="fixed bottom-6 right-6 z-50 w-96">
-      <Card className="shadow-xl border border-border/50 bg-card/95 backdrop-blur-sm">
+    <BlurFade delay={0.1} className="fixed right-6 bottom-6 z-50 w-96">
+      <Card className="border-border/50 bg-card/95 border shadow-xl backdrop-blur-sm">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center justify-between">
+          <CardTitle className="flex items-center justify-between text-lg">
             <div className="flex items-center gap-2">
               <span className="text-xl">⚡</span>
               <span>Captura Rápida</span>
               {suggestion.confidence !== 'none' && (
-                <Badge variant={getBadgeVariant(suggestion.confidence)} className="text-xs">
+                <Badge
+                  variant={getBadgeVariant(suggestion.confidence)}
+                  className="text-xs"
+                >
                   {getBadgeIcon(suggestion.type)} {suggestion.type}
                 </Badge>
               )}
@@ -167,16 +187,17 @@ export function QuickCaptureEnhanced() {
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(false)}
-              className="h-8 w-8 p-0 hover:bg-muted"
+              className="hover:bg-muted h-8 w-8 p-0"
             >
               ✕
             </Button>
           </CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Capture qualquer coisa. Use comandos: /tarefa, /meta, /habito, /lembrete
+          <p className="text-muted-foreground text-sm">
+            Capture qualquer coisa. Use comandos: /tarefa, /meta, /habito,
+            /lembrete
           </p>
         </CardHeader>
-        
+
         <CardContent className="space-y-4">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <Input
@@ -185,35 +206,35 @@ export function QuickCaptureEnhanced() {
               disabled={loading}
               className="h-10"
             />
-            
+
             <div className="space-y-2">
               <Textarea
                 {...form.register('conteudo')}
                 placeholder={MESSAGES.capture.placeholder_content}
                 rows={3}
                 disabled={loading}
-                onChange={(e) => {
+                onChange={e => {
                   form.setValue('conteudo', e.target.value)
                   handleTemplateCommand(e.target.value)
                 }}
                 className="resize-none"
               />
-              
+
               {templateHint && (
-                <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
+                <div className="text-muted-foreground bg-muted/50 rounded p-2 text-xs">
                   💡 Template: {templateHint}
                 </div>
               )}
             </div>
-            
+
             <div className="flex items-center gap-4">
               <Input
                 {...form.register('contexto')}
                 placeholder="Contexto (@casa, @trabalho, @telefone)"
                 disabled={loading}
-                className="flex-1 h-10"
+                className="h-10 flex-1"
               />
-              
+
               <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
@@ -225,39 +246,46 @@ export function QuickCaptureEnhanced() {
                 <span>Urgente</span>
               </label>
             </div>
-            
+
             {suggestion.confidence !== 'none' && (
-              <div className={`border rounded-lg p-3 ${
-                suggestion.confidence === 'high' 
-                  ? 'bg-primary/5 border-primary/20' 
-                  : 'bg-muted/50 border-border'
-              }`}>
+              <div
+                className={`rounded-lg border p-3 ${
+                  suggestion.confidence === 'high'
+                    ? 'bg-primary/5 border-primary/20'
+                    : 'bg-muted/50 border-border'
+                }`}
+              >
                 <div className="flex items-center gap-2 text-sm">
                   <span>{suggestion.confidence === 'high' ? '🎯' : '💡'}</span>
-                  <span className={suggestion.confidence === 'high' ? 'text-primary' : 'text-foreground'}>
+                  <span
+                    className={
+                      suggestion.confidence === 'high'
+                        ? 'text-primary'
+                        : 'text-foreground'
+                    }
+                  >
                     Parece ser uma <strong>{suggestion.type}</strong>
-                    {suggestion.confidence === 'high' && ' - sugestão de alta confiança'}
+                    {suggestion.confidence === 'high' &&
+                      ' - sugestão de alta confiança'}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{suggestion.reason}</p>
+                <p className="text-muted-foreground mt-1 text-xs">
+                  {suggestion.reason}
+                </p>
               </div>
             )}
 
             {form.formState.errors.conteudo && (
-              <p className="text-sm text-destructive">
+              <p className="text-destructive text-sm">
                 {form.formState.errors.conteudo.message}
               </p>
             )}
 
             <div className="flex gap-2">
-              <Button 
-                type="submit" 
-                disabled={loading} 
-                className="flex-1 h-10"
-              >
+              <Button type="submit" disabled={loading} className="h-10 flex-1">
                 {loading ? (
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                     {MESSAGES.capture.loading}
                   </div>
                 ) : (
@@ -275,15 +303,28 @@ export function QuickCaptureEnhanced() {
               </Button>
             </div>
           </form>
-          
-          <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded border-l-4 border-primary/20">
-            <div className="font-medium text-foreground mb-1">💡 Dicas GTD & PARA:</div>
+
+          <div className="text-muted-foreground bg-muted/30 border-primary/20 rounded border-l-4 p-3 text-xs">
+            <div className="text-foreground mb-1 font-medium">
+              💡 Dicas GTD & PARA:
+            </div>
             <div className="space-y-1">
-              <div>• <strong>/tarefa</strong> - Cria uma tarefa acionável</div>
-              <div>• <strong>/meta</strong> - Define um objetivo de longo prazo</div>
-              <div>• <strong>/habito</strong> - Estabelece uma rotina</div>
-              <div>• <strong>/lembrete</strong> - Agenda um lembrete</div>
-              <div>• Use <strong>@contexto</strong> para organizar por local/situação</div>
+              <div>
+                • <strong>/tarefa</strong> - Cria uma tarefa acionável
+              </div>
+              <div>
+                • <strong>/meta</strong> - Define um objetivo de longo prazo
+              </div>
+              <div>
+                • <strong>/habito</strong> - Estabelece uma rotina
+              </div>
+              <div>
+                • <strong>/lembrete</strong> - Agenda um lembrete
+              </div>
+              <div>
+                • Use <strong>@contexto</strong> para organizar por
+                local/situação
+              </div>
             </div>
           </div>
         </CardContent>

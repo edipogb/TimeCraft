@@ -11,18 +11,15 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true
-  }
+    detectSessionInUrl: true,
+  },
 })
 
 // Função de teste da conexão
 export async function testConnection() {
   try {
-    const { error } = await supabase
-      .from('usuarios')
-      .select('id')
-      .limit(1)
-    
+    const { error } = await supabase.from('usuarios').select('id').limit(1)
+
     if (error) throw error
     console.log('✅ Supabase conectado com sucesso!')
     return true
@@ -36,17 +33,21 @@ export async function testConnection() {
 export async function testAuth() {
   try {
     console.log('🔍 Testando autenticação...')
-    
+
     // Teste básico da auth
-    const { data: session, error: sessionError } = await supabase.auth.getSession()
-    
+    const { data: session, error: sessionError } =
+      await supabase.auth.getSession()
+
     if (sessionError) {
       console.error('❌ Erro na sessão:', sessionError)
       return false
     }
-    
-    console.log('✅ Auth funcionando. Sessão atual:', session.session?.user?.email || 'Não logado')
-    
+
+    console.log(
+      '✅ Auth funcionando. Sessão atual:',
+      session.session?.user?.email || 'Não logado'
+    )
+
     return true
   } catch (error) {
     console.error('❌ Erro no teste de auth:', error)
@@ -56,8 +57,10 @@ export async function testAuth() {
 
 // Expor para debug no browser (sem expor chaves)
 if (typeof window !== 'undefined') {
-  (window as unknown as { supabaseDebug: typeof import('./supabase') }).supabaseDebug = {
+  ;(
+    window as unknown as { supabaseDebug: typeof import('./supabase') }
+  ).supabaseDebug = {
     testConnection,
-    testAuth
+    testAuth,
   }
 }

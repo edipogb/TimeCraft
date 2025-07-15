@@ -1,107 +1,122 @@
+/* AIDEV-NOTE: Tailwind v4 native configuration - CRITICAL for proper CSS class generation */
+/* AIDEV-NOTE: This file was migrated from v3 to v4 to fix missing bg-card, bg-primary classes */
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
-@layer base {
-  :root {
-    /* Light Theme - Seguindo DESIGN.md exato */
-    --background: 0 0% 100%;                 /* #ffffff */
-    --foreground: 217.2 32.6% 17.5%;        /* #1f2937 Gray 800 */
-    --card: 0 0% 100%;                       /* #ffffff */
-    --card-foreground: 217.2 32.6% 17.5%;   /* #1f2937 */
-    --popover: 0 0% 100%;
-    --popover-foreground: 217.2 32.6% 17.5%;
-    
-    /* Primary Blue - DESIGN.md */
-    --primary: 221.2 83.2% 53.3%;           /* #3b82f6 Blue 500 */
-    --primary-foreground: 0 0% 100%;
-    
-    /* Secondary Backgrounds */
-    --secondary: 220 14.3% 95.9%;           /* #f9fafb Gray 50 */
-    --secondary-foreground: 217.2 32.6% 17.5%;
-    --muted: 220 14.3% 95.9%;               /* #f3f4f6 Gray 100 */
-    --muted-foreground: 220 8.9% 46.1%;     /* #6b7280 Gray 500 */
-    
-    /* Accents */
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 217.2 32.6% 17.5%;
-    
-    /* Semantic Colors - DESIGN.md exato */
-    --success: 158 64% 52%;                  /* #10b981 */
-    --success-foreground: 0 0% 100%;
-    --warning: 43 96% 56%;                   /* #f59e0b */  
-    --warning-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;                /* #ef4444 */
-    --destructive-foreground: 0 0% 100%;
-    
-    /* Borders and Inputs */
-    --border: 220 13% 91%;                   /* #e5e7eb Gray 200 */
-    --input: 220 13% 91%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 12px;
-    
-    /* PARA Method Colors - DESIGN.md */
-    --para-projects: 221.2 83.2% 53.3%;     /* #3b82f6 Blue */
-    --para-areas: 158 64% 52%;               /* #10b981 Green */
-    --para-resources: 262.1 83.3% 57.8%;    /* #8b5cf6 Purple */
-    --para-archive: 220 8.9% 46.1%;         /* #6b7280 Gray */
-  }
- 
-  .dark {
-    /* Dark Theme - Seguindo DESIGN.md exato */
-    --background: 222.2 84% 4.9%;           /* #0f172a Slate 900 */
-    --foreground: 210 40% 98%;              /* #f1f5f9 Slate 100 */
-    --card: 215.4 16.3% 46.9%;             /* #1e293b Slate 800 */
-    --card-foreground: 210 40% 98%;
-    --popover: 215.4 16.3% 46.9%;
-    --popover-foreground: 210 40% 98%;
-    
-    /* Primary Blue - Dark */
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 0 0% 100%;
-    
-    /* Secondary Backgrounds - Dark */
-    --secondary: 215.4 16.3% 46.9%;        /* #1e293b Slate 800 */
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215.3 25% 26.7%;              /* #334155 Slate 700 */
-    --muted-foreground: 215.4 16.3% 65.8%; /* #94a3b8 Slate 400 */
-    
-    /* Accents - Dark */
-    --accent: 215.3 25% 26.7%;
-    --accent-foreground: 210 40% 98%;
-    
-    /* Semantic Colors - Dark adjusted */
-    --success: 158 64% 52%;
-    --success-foreground: 0 0% 100%;
-    --warning: 43 96% 56%;
-    --warning-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    /* Borders and Inputs - Dark */
-    --border: 215.3 19.3% 34.5%;           /* #475569 Slate 600 */
-    --input: 215.3 19.3% 34.5%;
-    --ring: 221.2 83.2% 53.3%;
+/* AIDEV-NOTE: Tailwind v4 @theme directive - replaces v3 @layer base with CSS variables */
+/* AIDEV-NOTE: These variables are used by Tailwind engine to generate utility classes */
+@theme {
+  /* AIDEV-NOTE: Light theme colors - enhanced for better visual contrast */
+  --color-background: 220 20% 98%; /* #f8fafc Slate 50 - mais suave */
+  --color-foreground: 217.2 32.6% 17.5%; /* #1f2937 Gray 800 */
+  --color-card: 0 0% 100%; /* #ffffff - cards brancos */
+  --color-card-foreground: 217.2 32.6% 17.5%; /* #1f2937 */
+  --color-popover: 0 0% 100%; /* #ffffff */
+  --color-popover-foreground: 217.2 32.6% 17.5%;
+
+  /* AIDEV-NOTE: Primary blue - more vibrant for better UX */
+  --color-primary: 214.3 95% 60%; /* #3b82f6 mais saturado */
+  --color-primary-foreground: 0 0% 100%;
+
+  /* AIDEV-NOTE: Secondary backgrounds - increased differentiation between elements */
+  --color-secondary: 220 14.3% 95.9%; /* #f1f5f9 Slate 100 */
+  --color-secondary-foreground: 217.2 32.6% 17.5%;
+  --color-muted: 220 14.3% 91%; /* #e2e8f0 Slate 200 */
+  --color-muted-foreground: 220 8.9% 46.1%; /* #6b7280 Gray 500 */
+
+  /* AIDEV-NOTE: Accent colors - more distinct for better accessibility */
+  --color-accent: 220 14.3% 93%; /* #e7e7eb */
+  --color-accent-foreground: 217.2 32.6% 17.5%;
+
+  /* AIDEV-NOTE: Semantic colors - enhanced saturation for better visibility */
+  --color-success: 158 75% 48%; /* #10b981 mais saturado */
+  --color-success-foreground: 0 0% 100%;
+  --color-warning: 43 100% 58%; /* #f59e0b mais vibrante */
+  --color-warning-foreground: 0 0% 100%;
+  --color-destructive: 0 90% 58%; /* #ef4444 mais vibrante */
+  --color-destructive-foreground: 0 0% 100%;
+  --color-info: 189 100% 45%; /* #06b6d4 mais saturado */
+  --color-info-foreground: 0 0% 100%;
+
+  /* AIDEV-NOTE: Form elements and borders */
+  --color-border: 220 13% 87%; /* #d1d5db Gray 300 */
+  --color-input: 220 13% 87%;
+  --color-ring: 214.3 95% 60%;
+
+  /* AIDEV-NOTE: Border radius for consistent UI */
+  --radius: 12px;
+
+  /* AIDEV-NOTE: PARA Method colors for GTD organization system */
+  --color-para-projects: 214.3 95% 60%; /* Blue mais vibrante */
+  --color-para-areas: 158 75% 48%; /* Green mais vibrante */
+  --color-para-resources: 262.1 90% 60%; /* Purple mais vibrante */
+  --color-para-archive: 220 8.9% 46.1%; /* Gray */
+}
+
+/* AIDEV-NOTE: Dark theme modifier - enhanced contrast for dark mode UX */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    /* AIDEV-NOTE: Dark theme backgrounds - improved differentiation */
+    --color-background: 222.2 84% 4.9%; /* #0f172a Slate 900 */
+    --color-foreground: 210 40% 98%; /* #f1f5f9 Slate 100 */
+    --color-card: 215.4 19% 16.9%; /* #1e293b Slate 800 mais claro */
+    --color-card-foreground: 210 40% 98%;
+    --color-popover: 215.4 19% 16.9%;
+    --color-popover-foreground: 210 40% 98%;
+
+    /* AIDEV-NOTE: Dark theme primary - more vibrant for dark backgrounds */
+    --color-primary: 214.3 100% 65%; /* Azul mais vibrante */
+    --color-primary-foreground: 0 0% 100%;
+
+    /* AIDEV-NOTE: Dark theme secondary elements - better visual hierarchy */
+    --color-secondary: 215.4 19% 20%; /* #2d3b4e Mais claro que card */
+    --color-secondary-foreground: 210 40% 98%;
+    --color-muted: 215.3 25% 28%; /* #3a4d5c Ainda mais claro */
+    --color-muted-foreground: 215.4 16.3% 75%; /* Texto mais claro */
+
+    /* AIDEV-NOTE: Dark theme accents - improved visibility */
+    --color-accent: 215.3 25% 32%; /* Ainda mais claro */
+    --color-accent-foreground: 210 40% 98%;
+
+    /* AIDEV-NOTE: Dark theme semantic colors - enhanced for dark backgrounds */
+    --color-success: 158 75% 55%; /* Verde mais vibrante */
+    --color-success-foreground: 0 0% 100%;
+    --color-warning: 43 100% 60%; /* Amarelo mais vibrante */
+    --color-warning-foreground: 0 0% 100%;
+    --color-destructive: 0 90% 65%; /* Vermelho mais vibrante */
+    --color-destructive-foreground: 0 0% 100%;
+    --color-info: 189 100% 50%; /* Cyan mais vibrante */
+    --color-info-foreground: 0 0% 100%;
+
+    /* AIDEV-NOTE: Dark theme borders - more visible for better UX */
+    --color-border: 215.3 25% 40%; /* Borders mais claros */
+    --color-input: 215.3 25% 40%;
+    --color-ring: 214.3 100% 65%;
   }
 }
 
+/* AIDEV-NOTE: Base styles compatible with Tailwind v4 - essential for proper rendering */
 @layer base {
   * {
-    border-color: hsl(var(--border));
+    border-color: hsl(var(--color-border));
   }
-  
+
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: hsl(var(--color-background));
+    color: hsl(var(--color-foreground));
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
   }
-  
-  /* Better font rendering */
+
+  /* AIDEV-NOTE: Font rendering optimizations for better readability */
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-  
-  /* Remove default button styles */
+
+  /* AIDEV-NOTE: Button reset for consistent styling across browsers */
   button {
     background-color: transparent;
     border: 0;
@@ -109,15 +124,15 @@
   }
 }
 
-/* Smooth transitions for theme switching */
+/* AIDEV-NOTE: Theme transition animation - smooth switching between light/dark modes */
 * {
-  transition: 
+  transition:
     background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out,
     color 0.15s ease-in-out;
 }
 
-/* Magic UI Animations */
+/* AIDEV-NOTE: Magic UI specific animations - required for component library */
 @keyframes shimmer-slide {
   to {
     transform: translate(100%, 0);
@@ -128,10 +143,12 @@
   0% {
     transform: translateZ(0) rotate(0);
   }
-  15%, 35% {
+  15%,
+  35% {
     transform: translateZ(0) rotate(90deg);
   }
-  65%, 85% {
+  65%,
+  85% {
     transform: translateZ(0) rotate(270deg);
   }
   100% {
@@ -151,7 +168,7 @@
   }
 }
 
-/* Custom animations */
+/* AIDEV-NOTE: Custom animations for TimeCraft UX - consistent animation library */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -200,6 +217,7 @@
   }
 }
 
+/* AIDEV-NOTE: Animation utility classes - provides consistent animation interface */
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -228,20 +246,36 @@
   animation: rainbow calc(var(--speed) * 2) infinite linear;
 }
 
-/* Scrollbar styling for dark mode */
+/* AIDEV-NOTE: Custom scrollbar styling - consistent with design system */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: hsl(var(--secondary));
+  background-color: hsl(var(--color-secondary));
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--muted-foreground));
+  background-color: hsl(var(--color-muted-foreground));
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--accent-foreground));
+  background-color: hsl(var(--color-accent-foreground));
+}
+
+/* AIDEV-NOTE: Legacy glassmorphism support - keeping for existing components */
+/* AIDEV-NOTE: These variables should be gradually phased out in favor of bg-card/bg-primary */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(59, 130, 246, 0.15);
+  --shadow: rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --glass-bg: rgba(30, 41, 59, 0.95);
+    --glass-border: rgba(59, 130, 246, 0.3);
+    --shadow: rgba(0, 0, 0, 0.6);
+  }
 }

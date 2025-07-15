@@ -11,7 +11,9 @@ import type { Nota } from '@/types/app'
 export function InboxPage() {
   const { notes, loading, fetchNotes, updateNote } = useNotesStore()
   const [convertingNote, setConvertingNote] = useState<Nota | null>(null)
-  const [preselectedType, setPreselectedType] = useState<'tarefa' | 'meta'>('tarefa')
+  const [preselectedType, setPreselectedType] = useState<'tarefa' | 'meta'>(
+    'tarefa'
+  )
   const [processingNoteId, setProcessingNoteId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -58,22 +60,22 @@ export function InboxPage() {
 
   if (convertingNote) {
     return (
-      <div className="min-h-screen bg-background p-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="bg-background min-h-screen p-6">
+        <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="mb-6"
           >
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setConvertingNote(null)}
-              className="bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-card/80 shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl"
             >
               ← Voltar para Inbox
             </Button>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,10 +97,10 @@ export function InboxPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Header com gradiente */}
-      <div className="bg-background/80 backdrop-blur-lg border-b border-border sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="bg-background/80 border-border sticky top-0 z-10 border-b backdrop-blur-lg">
+        <div className="mx-auto max-w-7xl px-6 py-6">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -106,25 +108,29 @@ export function InboxPage() {
             className="flex items-center justify-between"
           >
             <div>
-              <h1 className="text-4xl font-bold text-foreground">
+              <h1 className="text-foreground text-4xl font-bold">
                 📥 Inbox GTD
               </h1>
               <p className="text-muted-foreground mt-2 text-lg">
                 Processe suas notas capturadas seguindo a metodologia GTD
               </p>
             </div>
-            
+
             {unprocessedNotes.length > 0 && (
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="bg-warning text-warning-foreground px-6 py-3 rounded-full font-semibold shadow-lg flex items-center gap-2"
+                className="bg-warning text-warning-foreground flex items-center gap-2 rounded-full px-6 py-3 font-semibold shadow-lg"
               >
                 <span className="text-2xl">⚡</span>
                 <div>
-                  <div className="text-lg font-bold">{unprocessedNotes.length}</div>
+                  <div className="text-lg font-bold">
+                    {unprocessedNotes.length}
+                  </div>
                   <div className="text-xs opacity-90">
-                    {unprocessedNotes.length === 1 ? 'nota pendente' : 'notas pendentes'}
+                    {unprocessedNotes.length === 1
+                      ? 'nota pendente'
+                      : 'notas pendentes'}
                   </div>
                 </div>
               </motion.div>
@@ -133,42 +139,49 @@ export function InboxPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-8">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
-              <div className="w-16 h-16 border-4 border-muted border-t-primary rounded-full animate-spin mx-auto mb-6"></div>
-              <p className="text-foreground text-lg">Carregando suas notas...</p>
-              <p className="text-muted-foreground text-sm mt-2">Preparando o processamento GTD</p>
+              <div className="border-muted border-t-primary mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4"></div>
+              <p className="text-foreground text-lg">
+                Carregando suas notas...
+              </p>
+              <p className="text-muted-foreground mt-2 text-sm">
+                Preparando o processamento GTD
+              </p>
             </div>
           </div>
         ) : unprocessedNotes.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
+            className="py-20 text-center"
           >
-            <Card className="bg-card/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-border max-w-2xl mx-auto overflow-hidden">
+            <Card className="bg-card/80 border-border mx-auto max-w-2xl overflow-hidden rounded-3xl border shadow-2xl backdrop-blur-lg">
               <CardContent className="p-12">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring" }}
-                  className="text-8xl mb-6"
+                  transition={{ delay: 0.2, type: 'spring' }}
+                  className="mb-6 text-8xl"
                 >
                   🎉
                 </motion.div>
-                <h3 className="text-3xl font-bold text-card-foreground mb-4">
+                <h3 className="text-card-foreground mb-4 text-3xl font-bold">
                   Inbox Limpo!
                 </h3>
-                <p className="text-muted-foreground text-lg mb-6">
+                <p className="text-muted-foreground mb-6 text-lg">
                   Parabéns! Você processou todas as suas notas capturadas.
                 </p>
-                <div className="bg-success/10 p-6 rounded-2xl border border-success/20">
-                  <div className="text-sm text-success-foreground font-medium mb-2">✨ Metodologia GTD</div>
-                  <p className="text-sm text-success-foreground leading-relaxed">
-                    "Manter o inbox vazio é fundamental para uma mente tranquila e produtiva. 
-                    Continue capturando ideias e processando-as regularmente." - David Allen
+                <div className="bg-success/10 border-success/20 rounded-2xl border p-6">
+                  <div className="text-success-foreground mb-2 text-sm font-medium">
+                    ✨ Metodologia GTD
+                  </div>
+                  <p className="text-success-foreground text-sm leading-relaxed">
+                    "Manter o inbox vazio é fundamental para uma mente tranquila
+                    e produtiva. Continue capturando ideias e processando-as
+                    regularmente." - David Allen
                   </p>
                 </div>
               </CardContent>
@@ -182,24 +195,26 @@ export function InboxPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <Card className="bg-card/80 backdrop-blur-lg shadow-xl border-border">
+              <Card className="bg-card/80 border-border shadow-xl backdrop-blur-lg">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h2 className="text-2xl font-bold text-card-foreground mb-2">
+                      <h2 className="text-card-foreground mb-2 text-2xl font-bold">
                         Notas para Processar
                       </h2>
                       <p className="text-muted-foreground">
                         Selecione uma ação para cada nota seguindo o método GTD
                       </p>
                     </div>
-                    
+
                     <div className="text-right">
-                      <div className="text-4xl font-bold text-primary">
+                      <div className="text-primary text-4xl font-bold">
                         {unprocessedNotes.length}
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        {unprocessedNotes.length === 1 ? 'nota pendente' : 'notas pendentes'}
+                      <div className="text-muted-foreground text-sm">
+                        {unprocessedNotes.length === 1
+                          ? 'nota pendente'
+                          : 'notas pendentes'}
                       </div>
                     </div>
                   </div>
@@ -219,31 +234,38 @@ export function InboxPage() {
                     transition={{ delay: index * 0.1 }}
                     layout
                   >
-                    <Card className="bg-card/80 backdrop-blur-lg shadow-xl border-border overflow-hidden hover:shadow-2xl transition-all duration-300 group">
-                      <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
+                    <Card className="bg-card/80 border-border group overflow-hidden shadow-xl backdrop-blur-lg transition-all duration-300 hover:shadow-2xl">
+                      <div className="bg-primary/5 absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
                       <CardHeader className="relative pb-4">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <CardTitle className="text-xl font-semibold text-card-foreground mb-2">
+                            <CardTitle className="text-card-foreground mb-2 text-xl font-semibold">
                               {note.titulo || 'Sem título'}
                             </CardTitle>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="text-muted-foreground flex items-center gap-4 text-sm">
                               <span className="flex items-center gap-1">
-                                📅 {new Date(note.criado_em).toLocaleDateString('pt-BR')}
+                                📅{' '}
+                                {new Date(note.criado_em).toLocaleDateString(
+                                  'pt-BR'
+                                )}
                               </span>
                               <span className="flex items-center gap-1">
-                                🕒 {new Date(note.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                🕒{' '}
+                                {new Date(note.criado_em).toLocaleTimeString(
+                                  'pt-BR',
+                                  { hour: '2-digit', minute: '2-digit' }
+                                )}
                               </span>
                             </div>
                           </div>
-                          
+
                           {note.tags.length > 0 && (
-                            <div className="flex gap-2 flex-wrap">
-                              {note.tags.map((tag) => (
-                                <Badge 
-                                  key={tag} 
-                                  variant="secondary" 
+                            <div className="flex flex-wrap gap-2">
+                              {note.tags.map(tag => (
+                                <Badge
+                                  key={tag}
+                                  variant="secondary"
                                   className="bg-primary/10 text-primary text-xs font-medium"
                                 >
                                   {tag}
@@ -257,7 +279,7 @@ export function InboxPage() {
                       <CardContent className="relative">
                         {/* Conteúdo da nota */}
                         <div className="mb-6">
-                          <div className="bg-muted/30 rounded-xl p-4 border-l-4 border-primary">
+                          <div className="bg-muted/30 border-primary rounded-xl border-l-4 p-4">
                             <p className="text-foreground leading-relaxed">
                               {note.conteudo}
                             </p>
@@ -265,82 +287,94 @@ export function InboxPage() {
                         </div>
 
                         {/* Ações GTD */}
-                        <div className="border-t border-border pt-6">
-                          <div className="flex items-center gap-2 mb-4">
+                        <div className="border-border border-t pt-6">
+                          <div className="mb-4 flex items-center gap-2">
                             <span className="text-2xl">🤔</span>
-                            <p className="text-sm font-medium text-foreground">
+                            <p className="text-foreground text-sm font-medium">
                               O que fazer com esta nota?
                             </p>
                           </div>
-                          
-                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+
+                          <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
                             {/* Converter em Tarefa */}
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
                               <Button
                                 onClick={() => handleConvertToTask(note)}
                                 disabled={processingNoteId === note.id}
-                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group h-12"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground group relative h-12 w-full overflow-hidden shadow-lg transition-all duration-200 hover:shadow-xl"
                               >
-                                <div className="absolute inset-0 bg-primary-foreground/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                                <div className="bg-primary-foreground/10 absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                                 <div className="relative flex items-center justify-center gap-2">
                                   <span className="text-lg">✅</span>
                                   <span className="font-medium">Tarefa</span>
                                 </div>
                                 {processingNoteId === note.id && (
-                                  <div className="absolute inset-0 bg-primary-foreground/20 flex items-center justify-center">
-                                    <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                                  <div className="bg-primary-foreground/20 absolute inset-0 flex items-center justify-center">
+                                    <div className="border-primary-foreground h-4 w-4 animate-spin rounded-full border-2 border-t-transparent"></div>
                                   </div>
                                 )}
                               </Button>
                             </motion.div>
 
                             {/* Converter em Meta */}
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
                               <Button
                                 onClick={() => handleConvertToGoal(note)}
                                 disabled={processingNoteId === note.id}
-                                className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group h-12"
+                                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground group relative h-12 w-full overflow-hidden shadow-lg transition-all duration-200 hover:shadow-xl"
                               >
-                                <div className="absolute inset-0 bg-secondary-foreground/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                                <div className="bg-secondary-foreground/10 absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                                 <div className="relative flex items-center justify-center gap-2">
                                   <span className="text-lg">🎯</span>
                                   <span className="font-medium">Meta</span>
                                 </div>
                                 {processingNoteId === note.id && (
-                                  <div className="absolute inset-0 bg-secondary-foreground/20 flex items-center justify-center">
-                                    <div className="w-4 h-4 border-2 border-secondary-foreground border-t-transparent rounded-full animate-spin"></div>
+                                  <div className="bg-secondary-foreground/20 absolute inset-0 flex items-center justify-center">
+                                    <div className="border-secondary-foreground h-4 w-4 animate-spin rounded-full border-2 border-t-transparent"></div>
                                   </div>
                                 )}
                               </Button>
                             </motion.div>
 
                             {/* Manter como Nota */}
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
                               <Button
                                 onClick={() => handleKeepAsNote(note)}
                                 disabled={processingNoteId === note.id}
-                                className="w-full bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group h-12"
+                                className="bg-success hover:bg-success/90 text-success-foreground group relative h-12 w-full overflow-hidden shadow-lg transition-all duration-200 hover:shadow-xl"
                               >
-                                <div className="absolute inset-0 bg-success-foreground/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                                <div className="bg-success-foreground/10 absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                                 <div className="relative flex items-center justify-center gap-2">
                                   <span className="text-lg">📝</span>
                                   <span className="font-medium">Nota</span>
                                 </div>
                                 {processingNoteId === note.id && (
-                                  <div className="absolute inset-0 bg-success-foreground/20 flex items-center justify-center">
-                                    <div className="w-4 h-4 border-2 border-success-foreground border-t-transparent rounded-full animate-spin"></div>
+                                  <div className="bg-success-foreground/20 absolute inset-0 flex items-center justify-center">
+                                    <div className="border-success-foreground h-4 w-4 animate-spin rounded-full border-2 border-t-transparent"></div>
                                   </div>
                                 )}
                               </Button>
                             </motion.div>
 
                             {/* Conversão Avançada */}
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
                               <Button
                                 onClick={() => setConvertingNote(note)}
                                 disabled={processingNoteId === note.id}
                                 variant="outline"
-                                className="w-full bg-muted hover:bg-muted/80 text-muted-foreground border-border hover:border-accent shadow-lg hover:shadow-xl transition-all duration-200 h-12"
+                                className="bg-muted hover:bg-muted/80 text-muted-foreground border-border hover:border-accent h-12 w-full shadow-lg transition-all duration-200 hover:shadow-xl"
                               >
                                 <div className="flex items-center justify-center gap-2">
                                   <span className="text-lg">⚙️</span>
@@ -357,7 +391,7 @@ export function InboxPage() {
                               disabled={processingNoteId === note.id}
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
-                              className="text-sm text-muted-foreground hover:text-foreground px-4 py-2 rounded-lg hover:bg-muted transition-all duration-200 inline-flex items-center gap-2"
+                              className="text-muted-foreground hover:text-foreground hover:bg-muted inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition-all duration-200"
                             >
                               <span>📦</span>
                               Arquivar para depois
@@ -380,24 +414,28 @@ export function InboxPage() {
             >
               <Card className="bg-primary/5 border-primary/20 shadow-lg">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-primary mb-4 flex items-center gap-2 text-lg">
+                  <h3 className="text-primary mb-4 flex items-center gap-2 text-lg font-semibold">
                     <span className="text-2xl">💡</span>
                     Dicas GTD para Processamento Eficaz
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
                         <span className="text-lg">✅</span>
                         <div>
                           <strong className="text-primary">Tarefa:</strong>
-                          <p className="text-sm text-primary/80">Ação específica que você pode completar</p>
+                          <p className="text-primary/80 text-sm">
+                            Ação específica que você pode completar
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <span className="text-lg">🎯</span>
                         <div>
                           <strong className="text-primary">Meta:</strong>
-                          <p className="text-sm text-primary/80">Resultado que você quer alcançar</p>
+                          <p className="text-primary/80 text-sm">
+                            Resultado que você quer alcançar
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -406,21 +444,26 @@ export function InboxPage() {
                         <span className="text-lg">📝</span>
                         <div>
                           <strong className="text-primary">Nota:</strong>
-                          <p className="text-sm text-primary/80">Informação para referência futura</p>
+                          <p className="text-primary/80 text-sm">
+                            Informação para referência futura
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <span className="text-lg">📦</span>
                         <div>
                           <strong className="text-primary">Arquivo:</strong>
-                          <p className="text-sm text-primary/80">Talvez útil algum dia</p>
+                          <p className="text-primary/80 text-sm">
+                            Talvez útil algum dia
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="bg-primary/10 rounded-lg p-4">
-                    <p className="text-sm text-primary italic text-center">
-                      💭 "Se leva menos de 2 minutos para fazer, faça agora. Senão, capture como tarefa." 
+                    <p className="text-primary text-center text-sm italic">
+                      💭 "Se leva menos de 2 minutos para fazer, faça agora.
+                      Senão, capture como tarefa."
                       <span className="font-medium"> - David Allen</span>
                     </p>
                   </div>

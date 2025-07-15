@@ -7,13 +7,13 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div className="h-screen flex overflow-hidden bg-background">
+    <div className="bg-background flex h-screen overflow-hidden">
       <Sidebar />
-      
-      <div className="flex flex-col flex-1 overflow-hidden md:ml-64">
+
+      <div className="flex flex-1 flex-col overflow-hidden md:ml-64">
         <Header />
-        
-        <main className="flex-1 relative overflow-y-auto focus:outline-none">
+
+        <main className="relative flex-1 overflow-y-auto focus:outline-none">
           {children}
         </main>
       </div>

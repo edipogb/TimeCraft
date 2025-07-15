@@ -8,7 +8,7 @@ import { Toaster } from 'sonner'
 function App() {
   // Simple routing based on pathname
   const currentPath = window.location.pathname
-  
+
   const renderPage = () => {
     switch (currentPath) {
       case '/inbox':
@@ -24,12 +24,7 @@ function App() {
         {renderPage()}
         <QuickCaptureEnhanced />
       </AppLayout>
-      <Toaster 
-        position="top-right"
-        richColors
-        closeButton
-        duration={4000}
-      />
+      <Toaster position="top-right" richColors closeButton duration={4000} />
     </AuthProvider>
   )
 }

@@ -19,11 +19,11 @@ export function Dashboard() {
   const unprocessedNotes = notes.filter(note => note.tipo === 'rapida')
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Header da página */}
-      <div className="px-4 sm:px-6 py-8 border-b border-border">
+      <div className="border-border border-b px-4 py-8 sm:px-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-foreground text-3xl font-bold tracking-tight">
             TimeCraft Dashboard
           </h1>
           <p className="text-muted-foreground mt-2 text-lg">
@@ -32,101 +32,130 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 py-8 space-y-8">
+      <div className="space-y-8 px-4 py-8 sm:px-6">
         {/* Cards de estatísticas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Card className="from-card to-primary/5 border-border border bg-gradient-to-br shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <span className="text-lg">📝</span>
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
+                <div className="from-primary to-primary/80 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg">
+                  <span className="text-primary-foreground text-lg">📝</span>
                 </div>
-                <span>Notas de Hoje</span>
+                <span className="text-foreground">Notas de Hoje</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-foreground mb-2">
+              <div className="text-primary mb-2 text-3xl font-bold">
                 {todaysNotes.length}
               </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {todaysNotes.length === 1 ? 'nota capturada hoje' : 'notas capturadas hoje'}
+              <p className="text-muted-foreground mb-4 text-sm">
+                {todaysNotes.length === 1
+                  ? 'nota capturada hoje'
+                  : 'notas capturadas hoje'}
               </p>
               <div className="flex items-center gap-2">
-                <div className="h-2 bg-muted rounded-full flex-1">
-                  <div 
-                    className="h-2 bg-primary rounded-full transition-all duration-300"
-                    style={{ width: `${Math.min((todaysNotes.length / 10) * 100, 100)}%` }}
+                <div className="bg-muted h-3 flex-1 rounded-full">
+                  <div
+                    className="bg-primary h-3 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min((todaysNotes.length / 10) * 100, 100)}%`,
+                    }}
                   />
                 </div>
-                <span className="text-xs text-muted-foreground font-medium">
+                <span className="text-primary text-xs font-semibold">
                   {Math.round((todaysNotes.length / 10) * 100)}%
                 </span>
               </div>
             </CardContent>
           </Card>
 
-          <Card className={cn(
-            "border bg-card shadow-sm hover:shadow-md transition-shadow duration-200",
-            unprocessedNotes.length > 0 ? "border-warning/20 bg-warning/5" : "border-success/20 bg-success/5"
-          )}>
+          <Card
+            className={cn(
+              'border-border border shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl',
+              unprocessedNotes.length > 0
+                ? 'from-card to-warning/5 bg-gradient-to-br'
+                : 'from-card to-success/5 bg-gradient-to-br'
+            )}
+          >
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center gap-3">
-                <div className={cn(
-                  "w-10 h-10 rounded-lg flex items-center justify-center",
-                  unprocessedNotes.length > 0 ? "bg-warning/10" : "bg-success/10"
-                )}>
-                  <span className="text-lg">
-                    {unprocessedNotes.length > 0 ? "📥" : "✅"}
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
+                <div
+                  className={cn(
+                    'flex h-12 w-12 items-center justify-center rounded-xl shadow-lg',
+                    unprocessedNotes.length > 0
+                      ? 'from-warning to-warning/80 bg-gradient-to-br'
+                      : 'from-success to-success/80 bg-gradient-to-br'
+                  )}
+                >
+                  <span className="text-lg text-white">
+                    {unprocessedNotes.length > 0 ? '📥' : '✅'}
                   </span>
                 </div>
-                <span>Inbox GTD</span>
+                <span className="text-foreground">Inbox GTD</span>
                 {unprocessedNotes.length > 0 && (
-                  <span className="bg-warning text-warning-foreground text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center ml-auto">
-                    {unprocessedNotes.length > 99 ? '99+' : unprocessedNotes.length}
+                  <span className="bg-warning text-warning-foreground ml-auto flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold shadow-md">
+                    {unprocessedNotes.length > 99
+                      ? '99+'
+                      : unprocessedNotes.length}
                   </span>
                 )}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-foreground mb-2">
+              <div
+                className={cn(
+                  'mb-2 text-3xl font-bold',
+                  unprocessedNotes.length > 0 ? 'text-warning' : 'text-success'
+                )}
+              >
                 {unprocessedNotes.length}
               </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {unprocessedNotes.length === 1 ? 'nota para processar' : 'notas para processar'}
+              <p className="text-muted-foreground mb-4 text-sm">
+                {unprocessedNotes.length === 1
+                  ? 'nota para processar'
+                  : 'notas para processar'}
               </p>
               {unprocessedNotes.length > 0 && (
-                <button className="w-full bg-warning hover:bg-warning/90 text-warning-foreground px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                <button className="bg-warning hover:bg-warning/90 text-warning-foreground w-full rounded-lg px-3 py-2 text-sm font-medium shadow-md transition-all duration-200 hover:shadow-lg">
                   Processar agora
                 </button>
               )}
               {unprocessedNotes.length === 0 && (
-                <div className="bg-success/10 text-success px-3 py-2 rounded-lg text-sm font-medium text-center">
+                <div className="bg-success/10 text-success border-success/20 rounded-lg border px-3 py-2 text-center text-sm font-medium">
                   🎉 Inbox limpo!
                 </div>
               )}
             </CardContent>
           </Card>
 
-          <Card className="border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-200">
+          <Card className="from-card to-info/5 border-border border bg-gradient-to-br shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <span className="text-lg">📊</span>
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
+                <div className="from-info to-info/80 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg">
+                  <span className="text-info-foreground text-lg">📊</span>
                 </div>
-                <span>Total de Notas</span>
+                <span className="text-foreground">Total de Notas</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-foreground mb-2">
+              <div className="text-info mb-2 text-3xl font-bold">
                 {notes.length}
               </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {notes.length === 1 ? 'nota total no sistema' : 'notas totais no sistema'}
+              <p className="text-muted-foreground mb-4 text-sm">
+                {notes.length === 1
+                  ? 'nota total no sistema'
+                  : 'notas totais no sistema'}
               </p>
               <div className="space-y-2">
-                <div className="text-xs text-muted-foreground">Crescimento mensal</div>
-                <div className="h-2 bg-muted rounded-full">
-                  <div className="h-2 bg-success rounded-full w-3/4 transition-all duration-300" />
+                <div className="text-info text-xs font-medium">
+                  Crescimento mensal
+                </div>
+                <div className="bg-muted h-3 rounded-full">
+                  <div className="bg-info h-3 w-3/4 rounded-full transition-all duration-500" />
+                </div>
+                <div className="text-info flex justify-between text-xs">
+                  <span>+75%</span>
+                  <span>Meta: 100 notas</span>
                 </div>
               </div>
             </CardContent>
@@ -134,122 +163,171 @@ export function Dashboard() {
         </div>
 
         {/* Seção principal com notas recentes e próximos passos */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="border border-border bg-card shadow-sm">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <Card className="from-card to-primary/3 border-border border bg-gradient-to-br shadow-md transition-all duration-200 hover:shadow-xl">
             <CardHeader>
-              <CardTitle className="text-xl font-semibold flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <span className="text-lg">📋</span>
+              <CardTitle className="flex items-center gap-3 text-xl font-semibold">
+                <div className="from-primary to-primary/80 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg">
+                  <span className="text-primary-foreground text-lg">📋</span>
                 </div>
-                Notas Recentes
+                <span className="text-foreground">Notas Recentes</span>
               </CardTitle>
             </CardHeader>
-              <CardContent>
-                {loading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin"></div>
-                    <span className="ml-3 text-muted-foreground">Carregando...</span>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="border-muted border-t-primary h-8 w-8 animate-spin rounded-full border-4"></div>
+                  <span className="text-muted-foreground ml-3">
+                    Carregando...
+                  </span>
+                </div>
+              ) : notes.length === 0 ? (
+                <div className="py-8 text-center">
+                  <div className="mb-4 text-4xl sm:text-6xl">📝</div>
+                  <div className="text-foreground mb-2 font-medium">
+                    Nenhuma nota ainda
                   </div>
-                ) : notes.length === 0 ? (
-                  <div className="text-center py-8">
-                    <div className="text-4xl sm:text-6xl mb-4">📝</div>
-                    <div className="text-muted-foreground mb-2">Nenhuma nota ainda</div>
-                    <div className="text-sm text-muted-foreground/80">Use o Quick Capture para começar!</div>
+                  <div className="text-muted-foreground text-sm">
+                    Use o Quick Capture para começar!
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    {notes.slice(0, 5).map((note) => (
-                      <div 
-                        key={note.id}
-                        className="p-4 rounded-lg border border-border bg-muted/50 hover:bg-muted/70 transition-colors duration-200"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="w-1 h-12 bg-primary rounded-full flex-shrink-0"></div>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-foreground text-sm mb-1 truncate">
-                              {note.titulo || 'Sem título'}
-                            </div>
-                            <div className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                              {note.conteudo}
-                            </div>
-                            <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-                              <span className="flex items-center gap-1">
-                                📅 {new Date(note.criado_em).toLocaleDateString('pt-BR')}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                🕒 {new Date(note.criado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                              </span>
-                              {note.tipo !== 'rapida' && (
-                                <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
-                                  {note.tipo}
-                                </span>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {notes.slice(0, 5).map(note => (
+                    <div
+                      key={note.id}
+                      className="bg-secondary border-border hover:bg-accent rounded-xl border p-4 transition-all duration-200 hover:shadow-md"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="bg-primary h-12 w-1 flex-shrink-0 rounded-full"></div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-foreground mb-1 truncate text-sm font-semibold">
+                            {note.titulo || 'Sem título'}
+                          </div>
+                          <div className="text-muted-foreground mb-2 line-clamp-2 text-sm">
+                            {note.conteudo}
+                          </div>
+                          <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-xs">
+                            <span className="flex items-center gap-1">
+                              📅{' '}
+                              {new Date(note.criado_em).toLocaleDateString(
+                                'pt-BR'
                               )}
-                            </div>
+                            </span>
+                            <span className="flex items-center gap-1">
+                              🕒{' '}
+                              {new Date(note.criado_em).toLocaleTimeString(
+                                'pt-BR',
+                                { hour: '2-digit', minute: '2-digit' }
+                              )}
+                            </span>
+                            {note.tipo !== 'rapida' && (
+                              <span className="bg-primary/10 text-primary border-primary/20 rounded-full border px-2 py-1 text-xs font-medium">
+                                {note.tipo}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-          </Card>
-
-          <Card className="border border-border bg-card shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <span className="text-lg">🚀</span>
-                </div>
-                Próximos Passos
-              </CardTitle>
-            </CardHeader>
-              <CardContent>
-                <div className="space-y-3 sm:space-y-4">
-                  {[
-                    { icon: "✅", text: "Sistema de autenticação", status: "completed", color: "green" },
-                    { icon: "✅", text: "Quick Capture funcionando", status: "completed", color: "green" },
-                    { icon: "✅", text: "Migração para Magic UI", status: "completed", color: "green" },
-                    { icon: "⏳", text: "Implementar gestão de tarefas", status: "progress", color: "yellow" },
-                    { icon: "⭕", text: "Sistema de metas", status: "pending", color: "gray" },
-                    { icon: "⭕", text: "Tracking de hábitos", status: "pending", color: "gray" }
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className={cn(
-                        "flex items-center gap-4 p-3 rounded-lg border transition-colors duration-200",
-                        item.color === 'green' && "bg-success/5 border-success/20",
-                        item.color === 'yellow' && "bg-warning/5 border-warning/20",
-                        item.color === 'gray' && "bg-muted/50 border-border"
-                      )}
-                    >
-                      <span className="text-lg flex-shrink-0">{item.icon}</span>
-                      <span className={cn(
-                        "text-sm font-medium flex-1",
-                        item.color === 'green' && "text-success",
-                        item.color === 'yellow' && "text-warning",
-                        item.color === 'gray' && "text-muted-foreground"
-                      )}>
-                        {item.text}
-                      </span>
-                      {item.status === 'progress' && (
-                        <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
-                          <div className="h-full bg-warning w-3/5 transition-all duration-500" />
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
+              )}
+            </CardContent>
+          </Card>
 
-                <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                  <div className="text-sm text-primary font-medium mb-2 flex items-center gap-2">
-                    <span>💡</span>
-                    Metodologia GTD
-                  </div>
-                  <div className="text-sm text-muted-foreground leading-relaxed">
-                    "Sua mente é para ter ideias, não para guardá-las." Capture tudo no sistema e processe regularmente para manter a mente clara e focada.
-                  </div>
+          <Card className="from-card to-success/3 border-border border bg-gradient-to-br shadow-md transition-all duration-200 hover:shadow-xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-xl font-semibold">
+                <div className="from-success to-success/80 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg">
+                  <span className="text-success-foreground text-lg">🚀</span>
                 </div>
-              </CardContent>
+                <span className="text-foreground">Próximos Passos</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 sm:space-y-4">
+                {[
+                  {
+                    icon: '✅',
+                    text: 'Sistema de autenticação',
+                    status: 'completed',
+                    color: 'green',
+                  },
+                  {
+                    icon: '✅',
+                    text: 'Quick Capture funcionando',
+                    status: 'completed',
+                    color: 'green',
+                  },
+                  {
+                    icon: '✅',
+                    text: 'Migração para Magic UI',
+                    status: 'completed',
+                    color: 'green',
+                  },
+                  {
+                    icon: '⏳',
+                    text: 'Implementar gestão de tarefas',
+                    status: 'progress',
+                    color: 'yellow',
+                  },
+                  {
+                    icon: '⭕',
+                    text: 'Sistema de metas',
+                    status: 'pending',
+                    color: 'gray',
+                  },
+                  {
+                    icon: '⭕',
+                    text: 'Tracking de hábitos',
+                    status: 'pending',
+                    color: 'gray',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className={cn(
+                      'flex items-center gap-4 rounded-xl border p-3 transition-all duration-200 hover:shadow-sm',
+                      item.color === 'green' &&
+                        'bg-success/5 border-success/20',
+                      item.color === 'yellow' &&
+                        'bg-warning/5 border-warning/20',
+                      item.color === 'gray' && 'bg-muted border-border'
+                    )}
+                  >
+                    <span className="flex-shrink-0 text-lg">{item.icon}</span>
+                    <span
+                      className={cn(
+                        'flex-1 text-sm font-semibold',
+                        item.color === 'green' && 'text-success',
+                        item.color === 'yellow' && 'text-warning',
+                        item.color === 'gray' && 'text-muted-foreground'
+                      )}
+                    >
+                      {item.text}
+                    </span>
+                    {item.status === 'progress' && (
+                      <div className="bg-muted h-2 w-16 overflow-hidden rounded-full">
+                        <div className="bg-warning h-full w-3/5 transition-all duration-500" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-primary/5 border-primary/20 mt-6 rounded-xl border p-4">
+                <div className="text-primary mb-2 flex items-center gap-2 text-sm font-semibold">
+                  <span>💡</span>
+                  Metodologia GTD
+                </div>
+                <div className="text-muted-foreground text-sm leading-relaxed">
+                  "Sua mente é para ter ideias, não para guardá-las." Capture
+                  tudo no sistema e processe regularmente para manter a mente
+                  clara e focada.
+                </div>
+              </div>
+            </CardContent>
           </Card>
         </div>
       </div>

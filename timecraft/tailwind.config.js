@@ -1,12 +1,14 @@
-// tailwind.config.js - Seguindo Magic UI Guidelines
+// AIDEV-NOTE: Tailwind v4 config - simplified for @theme directive compatibility
+// AIDEV-NOTE: Theme colors now defined in globals.css @theme instead of config
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  // AIDEV-NOTE: Tailwind v4 uses CSS-based theming, no need for class-based dark mode
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    // AIDEV-NOTE: Container settings maintained for layout consistency
     container: {
       center: true,
       padding: "2rem",
@@ -15,6 +17,7 @@ export default {
       },
     },
     extend: {
+      // AIDEV-NOTE: Screen breakpoints for responsive design
       screens: {
         'sm': '640px',
         'md': '768px',
@@ -22,62 +25,11 @@ export default {
         'xl': '1280px',
         '2xl': '1536px',
       },
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        // Cores de status que se adaptam ao tema
-        success: {
-          DEFAULT: "hsl(var(--success))",
-          foreground: "hsl(var(--success-foreground))",
-        },
-        warning: {
-          DEFAULT: "hsl(var(--warning))",
-          foreground: "hsl(var(--warning-foreground))",
-        },
-        error: {
-          DEFAULT: "hsl(var(--error))",
-          foreground: "hsl(var(--error-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
+      // AIDEV-NOTE: Font family for consistent typography
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
+      // AIDEV-NOTE: Custom animations for TimeCraft UX
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
@@ -86,6 +38,7 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      // AIDEV-NOTE: Keyframe definitions for animations
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
@@ -116,8 +69,9 @@ export default {
       },
     },
   },
+  // AIDEV-NOTE: Required plugins for typography support
+  // AIDEV-NOTE: tw-animate-css is imported in globals.css instead of plugin
   plugins: [
-    require("tailwindcss-animate"),
     require('@tailwindcss/typography'),
   ],
 }

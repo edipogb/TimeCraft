@@ -11,19 +11,22 @@ interface NotesState {
   deleteNote: (id: string) => Promise<void>
 }
 
-export const useNotesStore = create<NotesState>((set) => ({
+export const useNotesStore = create<NotesState>(set => ({
   notes: [],
   loading: false,
 
   createNote: async (data: NotaFormData) => {
     // Verificar se usuário está autenticado
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
     if (authError) {
       console.error('Erro ao verificar usuário:', authError)
       throw new Error('Erro de autenticação: ' + authError.message)
     }
-    
+
     if (!user) {
       throw new Error('Usuário não autenticado')
     }
@@ -32,14 +35,16 @@ export const useNotesStore = create<NotesState>((set) => ({
 
     const { data: note, error } = await supabase
       .from('notas')
-      .insert([{
-        titulo: data.titulo,
-        conteudo: data.conteudo,
-        tipo: data.tipo,
-        categoria_para: data.categoria_para,
-        tags: data.tags,
-        usuario_id: user.id, // Adicionar usuario_id necessário
-      }])
+      .insert([
+        {
+          titulo: data.titulo,
+          conteudo: data.conteudo,
+          tipo: data.tipo,
+          categoria_para: data.categoria_para,
+          tags: data.tags,
+          usuario_id: user.id, // Adicionar usuario_id necessário
+        },
+      ])
       .select()
       .single()
 
@@ -48,7 +53,7 @@ export const useNotesStore = create<NotesState>((set) => ({
       throw error
     }
 
-    set((state) => ({
+    set(state => ({
       notes: [note, ...state.notes],
     }))
 
@@ -57,7 +62,7 @@ export const useNotesStore = create<NotesState>((set) => ({
 
   fetchNotes: async () => {
     set({ loading: true })
-    
+
     const { data: notes, error } = await supabase
       .from('notas')
       .select('*')
@@ -74,27 +79,30 @@ export const useNotesStore = create<NotesState>((set) => ({
       .from('notas')
       .update({
         ...data,
-        atualizado_em: new Date().toISOString()
+        atualizado_em: new Date().toISOString(),
       })
       .eq('id', id)
 
     if (error) {
       console.error('Erro ao atualizar nota:', error)
-      console.error('Detalhes completos do erro:', JSON.stringify(error, null, 2))
+      console.error(
+        'Detalhes completos do erro:',
+        JSON.stringify(error, null, 2)
+      )
       throw error
     }
 
     console.log('Nota atualizada com sucesso no banco')
 
-    set((state) => {
-      const updatedNotes = state.notes.map((note) =>
+    set(state => {
+      const updatedNotes = state.notes.map(note =>
         note.id === id ? { ...note, ...data } : note
       )
       console.log('Estado atualizado:', {
         noteId: id,
         oldNote: state.notes.find(n => n.id === id),
         newData: data,
-        updatedNote: updatedNotes.find(n => n.id === id)
+        updatedNote: updatedNotes.find(n => n.id === id),
       })
       return { notes: updatedNotes }
     })
@@ -103,15 +111,12 @@ export const useNotesStore = create<NotesState>((set) => ({
   },
 
   deleteNote: async (id: string) => {
-    const { error } = await supabase
-      .from('notas')
-      .delete()
-      .eq('id', id)
+    const { error } = await supabase.from('notas').delete().eq('id', id)
 
     if (error) throw error
 
-    set((state) => ({
-      notes: state.notes.filter((note) => note.id !== id),
+    set(state => ({
+      notes: state.notes.filter(note => note.id !== id),
     }))
   },
 }))

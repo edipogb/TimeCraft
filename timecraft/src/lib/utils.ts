@@ -5,15 +5,20 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions) {
+export function formatDate(
+  date: string | Date,
+  options?: Intl.DateTimeFormatOptions
+) {
   const defaultOptions: Intl.DateTimeFormatOptions = {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
   }
-  
-  return new Intl.DateTimeFormat('pt-BR', { ...defaultOptions, ...options })
-    .format(new Date(date))
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    ...defaultOptions,
+    ...options,
+  }).format(new Date(date))
 }
 
 export function formatTime(date: string | Date) {
